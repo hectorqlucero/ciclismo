@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+<style>
+<!--
+body {
+  background-image: url(/images/registro.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: bottom;
+}
+//-->
+</style>
+{% endblock %}
+
+{% block navbar_content %}
+{% include "cc/registro_menu.html" %}
+{% endblock %}
+
+{% block content %}
+{% csrf-field %}
+<div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'"
+                               style="padding:5px;width:70%;">
+  <h1>{{ title }}</h1>
+  <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
+    <input type="hidden" id="id" name="id">
+    <input type="hidden" id="carreras_id" name="carreras_id">
+    <div class="form-group col-11" style="background-color:#f0f0f0;">
+      <p><small>Realizar el Pago en cualquier banco <b>{{item.banco}}</b> o directamente en cualquier tienda <b>OXXO</b></small><br/>
+      <small>Número de cuenta <b>{{item.banco}}: {{item.banco_cuenta}}</b></small><br/>
+      <small>{{item.banco_instrucciones}}</small>
+      </p>
+    </div>
+    <div class="form-group col-11">
+      <label for="email">Email:</label>
+      <input id="email" name="email" class="form-control easyui-validatebox" data-options="required:true,validType:'email',readonly:true">
+    </div>
+    <div class="form-group col-11">
+      <label for="categoria">Categoria:</label>
+      <input id="categoria" name="categoria" class="form-control easyui-combobox" data-options="url:'/table_ref/categorias',method:'GET',editable:false,readonly:true">
+    </div>
+    <div class="form-group col-11">
+      <label for="nombre">Nombre Completo:</label>
+      <input id="nombre" name="nombre" class="form-control easyui-textbox" data-options="required: true">
+    </div>
+    <div class="form-group col-11">
+      <label>Sexo:</label>
+      <div style="margin-bottom:3px;">
+        <input class="form-control easyui-radiobutton" id="sexo" name="sexo" value="M" data-options="label:'Masculino',labelPosition:'after'">
+      </div>
+      <div style="margin-bottom:3px;">
+        <input class="form-control easyui-radiobutton" id="sexo" name="sexo" value="F" data-options="label:'Femenino',labelPosition:'after'">
+      </div>
+    </div>
+    <div class="form-group col-11">
+      <label for="edad">Edad:</label>
+      <input id="edad" name="edad" class="form-control easyui-textbox" data-options="required: true">
+    </div>
+    <div class="form-group col-11">
+      <label for="equipo">Equipo:</label>
+      <input id="equipo" name="equipo" class="form-control easyui-textbox" data-options="required: true">
+    </div>
+    <div class="form-group col-11">
+      <label for="telefono">Telefono:</label>
+      <input id="telefono" name="telefono" class="form-control easyui-textbox type-phone"
+                                           data-options="required: false">
+    </div>
+    <div class="form-group col-11">
+      <label for="tutor">Nombre del padre o tutor (En su caso):</label>
+      <input id="tutor" name="tutor" class="form-control easyui-textbox" data-options="required: false">
+    </div>
+  </form>
+</div>
+<div id="dlg-buttons">
+  <a href="javascript:void(0)" class="easyui-linkbutton" id="submitbtn" data-options="iconCls: 'icon-ok'"
+                                                                        onclick="defaultGridSaveItem()">Registrar</a>
+  <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls: 'icon-cancel'"
+                                                         onclick="closeItem()">Cerrar</a>
+</div>
+{% endblock %}
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+<script>
+var token = $('#__anti-forgery-token').val();
+function defaultGridSaveItem() {
+    var form = $('.fm');
+    var the_email = $('#email').val();
+    // Create the request to save the inputted data on the form
+    form.form('submit', {
+        url: '/registro/save',
+        queryParams: {
+            '__anti-forgery-token': token,
+            'send_email': "T"
+        },
+        onSubmit: function () {
+            $("#submitbtn").linkbutton('disable');
+            return $(this).form('validate');
+        },
+        success: function (result) {
+            var json = JSON.parse(result);
+            // Display errors (if any)
+            if (json.error && json.success) {
+                // Display error on incomplete submission
+                $.messager.show({
+                    title: 'Error',
+                    msg: json.success + "<br>" + json.error
+                });
+            } else if (json.error) {
+                // Display error on failed submission
+                $.messager.show({
+                    title: 'Error',
+                    msg: json.error
+                });
+            } else if(json.success) {
+                // Display success message on complete submission
+                $.messager.show({
+                    title: 'Success',
+                    msg: json.success
+                });
+                <!-- <1!-- window.location.reload(true); --1> -->
+                <!-- $("#submitbtn").linkbutton('enable'); -->
+            }
+        }
+    });
+}
+$(document).ready(function() {
+    var dialog = $('.dlg');
+    var windowHeight;
+    var row = {{row|safe}};
+    dialog.dialog('open').dialog('center').dialog('setTitle', 'Editar Record');
+    windowHeight = $(window).height() - ($(window).height() * 0.2);
+    dialog.dialog('resize', {
+        height: windowHeight
+    }).dialog('center');
+    $(".fm").form('load', row);
+
+});
+
+    function closeItem() {
+        $('.dlg').dialog('close');
+        window.location.href = "/registro";
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+
+{% block content %}
+{% csrf-field %}
+<table id="dg"
+       class="easyui-datagrid datagrid-searchable"
+       style="width: 100%"
+       title="{{ title }}"
+       data-options="url: '/admin/cuadrantes/json/grid',
+           toolbar: '#toolbar',
+           queryParams: {'__anti-forgery-token':token},
+           pagination: true,
+           rownumbers: true,
+           nowrap: true,
+           autoRowHeight: false,
+           fitColumns: true,
+           autoSizeColumn: true,
+           singleSelect: true">
+    <thead>
+        <tr>
+            <th data-options="field: 'name', sortable: false">Nombre del Cuadrante</th>
+            <th data-options="field: 'leader', sortable: false">Lider</th>
+            <th data-options="field: 'leader_phone', sortable: false">Telefono</th>
+            <th data-options="field: 'leader_cell', sortable: false">Cell</th>
+            <th data-options="field: 'leader_email', sortable: false">Email</th>
+            <th data-options="field: 'notes', sortable: false">Observaciones</th>
+            <th data-options="field: 'status', sortable: false">Status</th>
+        </tr>
+    </thead>
+</table>
+<div id="toolbar">
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-add',plain: true"
+       onclick="defaultGridNewItem()">Crear</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-edit',plain: true"
+       onclick="defaultGridEditItem({})">Editar</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-remove',plain: true"
+       onclick="defaultGridDeleteItem()">Remover</a>
+    <div style="float: right">
+        <input class="easyui-textbox" id="datagrid-searchbox" data-options="prompt: 'Busqueda'" title="Buscar">
+    </div>
+</div>
+<div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'" style="padding: 5px;width:70%;">
+    <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
+        <input type="hidden" id="id"  name="id">
+	<div class="form-group col-11">
+		<label for="name">Cuadrante(<small>nombre ex: Cuadrante Rosita</small>):</label>
+		<input id="name" name="name" class="form-control easyui-textbox" data-options="required: true">
+	</div>
+	<div class="form-group col-11">
+		<label for="leader">Lider:</label>
+		<input id="leader" name="leader" class="form-control easyui-textbox" data-options="required: true">
+	</div>
+	<div class="form-group col-11">
+		<label for="leader_phone">Telefono:</label>
+		<input id="leader_phone" name="leader_phone" class="form-control easyui-textbox type-phone" data-options="required: false">
+	</div>
+	<div class="form-group col-11">
+		<label for="leader_cell">Cell:</label>
+		<input id="leader_cell" name="leader_cell" class="form-control easyui-textbox type-phone" data-options="required: false">
+	</div>
+	<div class="form-group col-11">
+		<label for="leader_email">Email:</label>
+		<input id="leader_email" name="leader_email" class="easyui-validatebox form-control" data-options="required:false,validType:'email'">
+	</div>
+	<div class="form-group col-11">
+		<label for="notes">Observaciones:</label>
+		<input id="notes" name="notes" type="email" class="form-control easyui-textbox" data-options="height:120">
+	</div>
+	<div class="form-group col-11">
+		<label>Activo?</label>
+		<div style="margin-bottom:3px;">
+			<input class="easyui-radiobutton" id="status" name="status" value="T" data-options="label:'Si',labelPosition:'after'">
+		</div>
+		<div style="margin-bottom:3px;">
+			<input class="easyui-radiobutton" id="status" name="status" value="F" data-options="label:'No',labelPosition:'after'">
+		</div>
+	</div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-ok'"
+       onclick="defaultGridSaveItem()">Postear</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-cancel'"
+       onclick="defaultGridDialogClose()">Cancelar</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+<script type="text/javascript" src="/js/defaultGrid.js"></script>
+{% endblock %}

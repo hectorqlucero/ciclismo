@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+<style>
+<!--
+body {
+  background-image: url(/images/registro.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: contain;
+  background-position: bottom;
+}
+//-->
+</style>
+{% endblock %}
+
+{% block navbar_content %}
+{% include "cc/registro_menu.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container col-8">
+    <div class="card-header">
+        <h4 class="mb-0"><span style="color:rgb(18,123,163);">Registrate Aquí</span></h4>
+    </div>
+    <form class="fm" method="post" action="/registro/processar" novalidate style="width:100%;background-color:#EFEFEF;">
+        {% csrf-field %}
+        <div class="form-group col-10">
+          <label for="carreras_id">Seleccionar Carrera:</label>
+            <input id="carreras_id" name="carreras_id" class="form-control easyui-combobox" data-options="url:'/table_ref/carreras',
+            method:'GET',
+            onSelect:function(record){
+            var url = '/table_ref/carreras_categorias/'+record.value;
+            $('#categoria').combobox('reload',url);
+            }">
+        </div>
+        <div class="form-group col-10">
+            <label for="categoria">Categoria:</label>
+            <input id="categoria" name="categoria" class="form-control easyui-combobox" data-options="method:'GET'">
+        </div>
+        <div class="form-group col-10">
+            <label for="email">Email:</label>
+            <input name="email" class="form-control easyui-validatebox" id="email" data-options="required: true,validType:'email'">
+        </div>
+        <div class="form-group col-10">
+          <input id="registrarse" type="submit" class="btn btn-primary" value="Registrate">
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+<script>
+$('#registrarse').click(function(event) {
+    var the_email = $("#email").val();
+    if (!the_email) {
+        return $('.fm').form('validate');
+    }
+});
+</script>
+{% endblock %}
