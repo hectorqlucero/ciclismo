@@ -99,19 +99,18 @@
 ;; Start carreras-categorias
 (def carreras-categorias-sql
   "SELECT
-p.nombre,
-p.categoria as categorias_id,
-s1.descripcion as categoria,
-SUM((IFNULL(s.puntos_p,0) + IFNULL(s.puntos_1,0) + IFNULL(s.puntos_2,0) + IFNULL(s.puntos_3,0))) as puntos
-FROM cartas p
-JOIN puntos s on s.cartas_id = p.id
-JOIN categorias s1 on s1.id = p.categoria
-WHERE
-p.carreras_id = ?
-AND p.categoria = ?
-GROUP BY p.carreras_id,p.email,p.categoria
-ORDER BY p.carreras_id,puntos DESC
-")
+  p.nombre,
+  p.categoria as categorias_id,
+  s1.descripcion as categoria,
+  SUM((IFNULL(s.puntos_p,0) + IFNULL(s.puntos_1,0) + IFNULL(s.puntos_2,0) + IFNULL(s.puntos_3,0))) as puntos
+  FROM cartas p
+  JOIN puntos s on s.cartas_id = p.id
+  JOIN categorias s1 on s1.id = p.categoria
+  WHERE
+  p.carreras_id = ?
+  AND p.categoria = ?
+  GROUP BY p.carreras_id,p.email,p.categoria
+  ORDER BY p.carreras_id,puntos DESC")
 
 (defn carreras-categorias [carreras_id categorias_id]
   (let [rows (Query db [carreras-categorias-sql carreras_id categorias_id])
