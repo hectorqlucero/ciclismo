@@ -525,7 +525,8 @@
 
 (defn create-categorias [rows]
   (map (fn [cid]
-         {:categorias_id cid
+         {:carreras_id cid
+          :categorias_id cid
           :categoria (get-description "categorias" "descripcion" "id" cid)}) (into '() (into #{} (map #(str (:categorias_id %)) rows)))))
 
 (defn calculate-speed [distance seconds]

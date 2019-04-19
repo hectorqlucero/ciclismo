@@ -96,16 +96,7 @@
 (def correos-sql
   "SELECT email as value,email as text FROM cartas ORDER BY email")
 
-(defn build-link [carreras_id categorias_id]
-  (str "/table_ref/carreras/categorias/" carreras_id "/" categorias_id))
-
-(defn carreras [carreras_id]
-  (let [categorias (carreras_categorias carreras_id)]
-    (for [categoria categorias]
-      (str "
-<div id='categoria-parent' class='easyui-accordion' data-options='fit:false,selected:false'>
-<div title='" (categoria :text) "' data-options='fit:false,href:\"" (build-link carreras_id (categoria :value)) "\"'></div></div>"))))
-
+;; Start carreras-categorias
 (def carreras-categorias-sql
   "SELECT
 p.nombre,
@@ -130,9 +121,9 @@ ORDER BY p.carreras_id,puntos DESC
         table-foot (str "</tbody></table>")
         the-table (str table-head table-body table-foot)]
     the-table))
+;; End carreras-categorias
 
 (defroutes table_ref-routes
-  (GET "/table_ref/carreras/:carreras_id" [carreras_id] (apply str (carreras carreras_id)))
   (GET "/table_ref/carreras/categorias/:carreras_id/:categorias_id" [carreras_id categorias_id] (carreras-categorias carreras_id categorias_id))
   (GET "/table_ref/get_users" [] (generate-string (Query db [get_users-sql])))
   (GET "/table_ref/get_cuadrantes" [] (generate-string (Query db [get_cuadrantes-sql])))

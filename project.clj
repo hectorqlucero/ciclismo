@@ -25,7 +25,7 @@
                  [ring/ring-anti-forgery "1.3.0"]
                  [ring/ring-defaults "0.3.2"]]
   :main ^:skip-aot ciclismo.core
-  :uberjar-name "ciclismo.jar"
+  :uberjar-name "cc.jar"
   :target-path "target/%s"
   :ring {:handler cliclismo.core/app
          :auto-reload? true

@@ -22,13 +22,36 @@
 {% endblock %}
 
 {% block content %}
-<div id="carreras_accordion" class="easyui-accordion master" data-options="fit:false,selected:false,width: '100%'">
-    {% for row in rows %}
-    <div id="accordion-parent" title="{{row.descripcion}}"
-         data-options="href:'/table_ref/carreras/{{row.id}}'"
-         style="overflow:auto;padding:10px;" >
+<div id="pp" class="easyui-panel" title="Puntos Por Carrera Por Categoria" style="width:100%;height:auto;padding:10px;" >
+    <div id="pp1" class="easyui-panel" title="Carreras" style="width:100%;height:auto;padding:10px;" >
+        <div id="carreras_accordion" class="easyui-accordion master"
+             data-options="fit:false,selected:false,width: '100%'">
+            {% for row in rows %}
+            <div id="accordion-parent" title="{{row.descripcion}}"
+                 style="overflow:auto;padding:10px;" >
+                <div id="pp2" class="easyui-panel" title="Categorias - {{row.descripcion}}" style="width:100%;height:auto;padding:10px;" data-options="style:{borderWidth:20}">
+                    <div id="categorias_accordion" class="easyui-accordion slave"
+                         data-options="fit:false,border:false,selected:false,width:'90%'" >
+                        {% for crow in crows %}
+                        {% ifequal row.id crow.carreras_id %}
+                        <div class="easyui-panel" id="accordion-child" title="{{crow.descripcion}}"
+                             data-options="href:'/table_ref/carreras/categorias/{{row.id}}/{{crow.categoria}}'"
+                             style="width:89%;overflow:auto;padding:10px;">
+                        </div>
+                        {% for item in items %}
+                        {% ifequal row.id item.carreras_id %}
+                        {% ifequal crow.categorias_id item.categorias_id %}
+                        {% endifequal %}
+                        {% endifequal %}
+                        {% endfor %}
+                        {% endifequal %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
 
@@ -40,13 +63,11 @@
 {% script "/easyui/locale/easyui-lang-es.js" %}
 <script>
  $(document).ready(function() {
-     if ($("#carreras_accordion").accordion('getSelected')) {
-         $("#categorias_accordion").accordion('add',{
-             title:'New Title',
-             content:'New Content',
-             selected:false
-         });
-     }
+     var header = $('#pp').panel('header');
+     header.css('background','#bbb');
+
+     var header1 = $('#pp1').panel('header');
+     header1.css('background','#ddd');
  });
 </script>
 {% endblock %}

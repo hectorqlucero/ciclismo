@@ -92,6 +92,7 @@
 
 (def totales-sql
   "SELECT
+     p.carreras_id,
      p.email,
      p.nombre,
      s1.id as categorias_id,
@@ -102,6 +103,15 @@
      JOIN categorias s1 on s1.id = p.categoria
      GROUP by p.email,p.categoria
      ORDER BY s1.descripcion,puntos DESC,p.nombre")
+
+(def totales-carrera-sql
+  "select
+  distinct
+  categorias.id,
+  categorias.descripcion
+  from cartas
+  join categorias on categorias.id = cartas.categoria
+  where cartas.carreras_id = ?")
 
 (def ptotales-sql
   "SELECT
