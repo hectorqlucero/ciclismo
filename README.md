@@ -1,11 +1,30 @@
 # ciclismo
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure library designed to:
+1. Manage ciclist training
+2. Manage competitive ciclists races
+3. Manage competitive against the clock races
 
 ## Usage
 
-FIXME
-
+1. Clone the repository
+2. Create directory ciclismo/resources/private
+3. Create a file "config.clj" in the above directory
+   {:db-protocol "mysql"
+    :db-name "//localhost:3306/[your database name]?characterEncoding=UTF-8"
+    :db-user "[your database user here ex root]"
+    :db-pwd "[your database password here]"
+    :db-class "com.mysql.cj.jdbc.Driver"
+    :email-host "[your email smtp server here ex smtp.gmail.com]"
+    :email-user "[your email user here ex user@gmail.com]"
+    :email-password "[your email password here]"
+    :port 3000
+    :tz "US/Pacific"
+    :site-name "Site Name"
+    :base-url "http://0.0.0.0:3000/"
+    :uploads "./uploads"
+    :path "/uploads/"}
+4. Create a mysql database. You can find all the tables an how to create them in: ciclismo/src/ciclismo/models/cdb.clj
 ## License
 
 Copyright © 2019 FIXME
