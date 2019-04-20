@@ -609,22 +609,24 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Insert-multi db :rodadas_link rodadas_link-rows)
   (Insert-multi db :categorias categorias-rows))
 
+This is to create carreras_categorias example
+(defn create-carreras-categorias []
+  (doseq [item (Query db "SELECT * FROM categorias")]
+    (doseq [sitem (Query db "SELECT * FROM carreras")]
+      (let [carreras_id (str (:id sitem))
+            categorias_id (str (:id item))
+            status "T"
+            id (:id (first (Query db ["SELECT id from carreras_categorias WHERE carreras_id = ? AND categorias_id = ?" carreras_id categorias_id])))
+            postvars {:id (str id)
+                      :carreras_id carreras_id
+                      :categorias_id categorias_id
+                      :status status}]
+        (Save db :carreras_categorias postvars ["id = ?" id])))))
+
 (defn migrate []
   "migrate by the seat of my pants"
-  (Query! db "DROP table IF EXISTS carreras"))
+  (Query! db "DROP table IF EXISTS carreras_categorias")
+  (create-carreras-categorias))
 
-;; This is to create carreras_categorias example
-;; (defn create-carreras-categorias []
-;;   (doseq [item (Query db "SELECT * FROM categorias")]
-;;     (doseq [sitem (Query db "SELECT * FROM carreras")]
-;;       (let [carreras_id (str (:id sitem))
-;;             categorias_id (str (:id item))
-;;             status "T"
-;;             id (:id (first (Query db ["SELECT id from carreras_categorias WHERE carreras_id = ? AND categorias_id = ?" carreras_id categorias_id])))
-;;             postvars {:id (str id)
-;;                       :carreras_id carreras_id
-;;                       :categorias_id categorias_id
-;;                       :status status}]
-;;         (Save db :carreras_categorias postvars ["id = ?" id])))))
 
 ;;(migrate)
