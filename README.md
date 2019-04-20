@@ -1,11 +1,10 @@
 # ciclismo
 
-A Clojure library designed to:
 1. Manage ciclist training
 2. Manage competitive ciclists races
 3. Manage competitive against the clock races
 
-## Usage
+## Installation
 
 1. Clone the repository
 2. Create directory ciclismo/resources/private
@@ -25,9 +24,17 @@ A Clojure library designed to:
     :uploads "./uploads"
     :path "/uploads/"}
 4. Create a mysql database. You can find all the tables an how to create them in: ciclismo/src/ciclismo/models/cdb.clj
+## Prerequesites
+1. leiningen 2.0.0 or above installed
+2. jdk8 or above
+3. mySQL or MariaDB
+## Running
+Lein Run
+## Demo
+http://lucero-systems.cf
 ## License
 
-Copyright © 2019 FIXME
+Copyright © 2019 LS
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
