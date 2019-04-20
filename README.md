@@ -8,7 +8,8 @@
 
 1. Clone the repository
 2. Create directory resources/private
-3. Create a file "config.clj" in the above directory
+3. Create a file resources/private/config.clj with the following contents:
+   ```
    {:db-protocol "mysql"
     :db-name "//localhost:3306/[your database name]?characterEncoding=UTF-8"
     :db-user "[your database user here ex root]"
@@ -23,6 +24,7 @@
     :base-url "http://0.0.0.0:3000/"
     :uploads "./uploads"
     :path "/uploads/"}
+    ```
 4. Create a mysql database. You can find all the tables an how to create them in: src/ciclismo/models/cdb.clj
 ## Prerequesites
 1. leiningen 2.0.0 or above installed
