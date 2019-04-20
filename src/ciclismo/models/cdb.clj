@@ -609,8 +609,8 @@ Informes: (653) 103-1460 * (653) 119-0725"
   (Insert-multi db :rodadas_link rodadas_link-rows)
   (Insert-multi db :categorias categorias-rows))
 
-This is to create carreras_categorias example
 (defn create-carreras-categorias []
+  "This is to create carreras_categorias example"
   (doseq [item (Query db "SELECT * FROM categorias")]
     (doseq [sitem (Query db "SELECT * FROM carreras")]
       (let [carreras_id (str (:id sitem))
