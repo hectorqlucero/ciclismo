@@ -10,20 +10,20 @@
 2. Create directory resources/private
 3. Create a file resources/private/config.clj with the following contents:
    ```
-   {:db-protocol "mysql"
-    :db-name "//localhost:3306/[your database name]?characterEncoding=UTF-8"
-    :db-user "[your database user here ex root]"
-    :db-pwd "[your database password here]"
-    :db-class "com.mysql.cj.jdbc.Driver"
-    :email-host "[your email smtp server here ex smtp.gmail.com]"
-    :email-user "[your email user here ex user@gmail.com]"
-    :email-password "[your email password here]"
-    :port 3000
-    :tz "US/Pacific"
-    :site-name "Site Name"
-    :base-url "http://0.0.0.0:3000/"
-    :uploads "./uploads"
-    :path "/uploads/"}
+{:db-protocol    "mysql"
+ :db-name        "//localhost:3306/cc?characterEncoding=UTF-8"
+ :db-user        "root"
+ :db-pwd         "xxxxxxxx"
+ :db-class       "com.mysql.cj.jdbc.Driver"
+ :email-host     "smtp.gmail.com"
+ :email-user     "user@gmail.com"
+ :email-password "xxxxxxxx"
+ :port           3000
+ :tz             "US/Pacific"
+ :site-name      "Ciclismo Mexicali"
+ :base-url       "http://0.0.0.0:3000/"
+ :uploads        "./uploads"
+ :path           "/uploads/"}
     ```
 4. Create a mysql database. You can find all the tables an how to create them in: src/ciclismo/models/cdb.clj
 ## Prerequesites
