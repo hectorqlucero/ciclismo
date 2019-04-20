@@ -190,21 +190,21 @@
     :leader_email "anavilla@azules.com"
     :notes        "Cuadrante ciclista con niveles inter y fast."
     :status       "T"}
-   {:name "Grupo Ciclista La Vid"
-    :leader "Marco Romero"
+   {:name         "Grupo Ciclista La Vid"
+    :leader       "Marco Romero"
     :leader_email "mromeropmx@hotmail.com"
-    :notes "Un grupo cristiano con deseos de mejorar nuestra salud..."
-    :status "T"}
+    :notes        "Un grupo cristiano con deseos de mejorar nuestra salud..."
+    :status       "T"}
    {:name         "Reto Demoledor"
     :leader       "Reto"
     :leader_email "retodemoledor@server.com"
     :notes        "Para mas información entra al grupo Reto Demoledor"
     :status       "T"}
-   {:name "Reto Aerobiker"
-    :leader "retoaerobiker"
+   {:name         "Reto Aerobiker"
+    :leader       "retoaerobiker"
     :leader_email "retoaerobiker@server.com"
-    :notes "Reto madrugador 5x5 mas detalles en Aerobikers (FB)"
-    :status "T"}
+    :notes        "Reto madrugador 5x5 mas detalles en Aerobikers (FB)"
+    :status       "T"}
    {:name         "Blanco"
     :leader       "blancolider"
     :leader_email "blancolider@server.com"
@@ -530,31 +530,31 @@ Informes: (653) 103-1460 * (653) 119-0725"
     :active    "T"}])
 
 (def categorias-rows
-  [{:id "A"
+  [{:id          "A"
     :descripcion "Infantil Mixta(hasta 12 años"}
-   {:id "B"
+   {:id          "B"
     :descripcion "MTB Mixta Montaña"}
-   {:id "C"
+   {:id          "C"
     :descripcion "Juveniles Varonil 13-14"}
-   {:id "D"
+   {:id          "D"
     :descripcion "Juveniles Varonil 15-17"}
-   {:id "E"
+   {:id          "E"
     :descripcion "Novatos Varonil"}
-   {:id "F"
+   {:id          "F"
     :descripcion "Master Varonil 40 y mas"}
-   {:id "G"
+   {:id          "G"
     :descripcion "Segunda Fuerza Varonil(Intermedios)"}
-   {:id "I"
+   {:id          "I"
     :descripcion "Primera Fuerza Varonil(Avanzados)"}
-   {:id "J"
+   {:id          "J"
     :descripcion "Piñon Fijo Varonil y una velicidad(SS)"}
-   {:id "K"
+   {:id          "K"
     :descripcion "Femenil Juvenil 15-17"}
-   {:id "L"
+   {:id          "L"
     :descripcion "Segunda Fuerza Femenil(Abierta, Novatas)"}
-   {:id "M"
+   {:id          "M"
     :descripcion "Primera Fuerza Femenil(Avanzadas)"}
-   {:id "N"
+   {:id          "N"
     :descripcion "Piñon Fijo Femenil y una velocidad(SS)"}])
 
 (defn create-database []
@@ -613,14 +613,14 @@ Informes: (653) 103-1460 * (653) 119-0725"
   "This is to create carreras_categorias example"
   (doseq [item (Query db "SELECT * FROM categorias")]
     (doseq [sitem (Query db "SELECT * FROM carreras")]
-      (let [carreras_id (str (:id sitem))
+      (let [carreras_id   (str (:id sitem))
             categorias_id (str (:id item))
-            status "T"
-            id (:id (first (Query db ["SELECT id from carreras_categorias WHERE carreras_id = ? AND categorias_id = ?" carreras_id categorias_id])))
-            postvars {:id (str id)
-                      :carreras_id carreras_id
-                      :categorias_id categorias_id
-                      :status status}]
+            status        "T"
+            id            (:id (first (Query db ["SELECT id from carreras_categorias WHERE carreras_id = ? AND categorias_id = ?" carreras_id categorias_id])))
+            postvars      {:id            (str id)
+                           :carreras_id   carreras_id
+                           :categorias_id categorias_id
+                           :status        status}]
         (Save db :carreras_categorias postvars ["id = ?" id])))))
 
 (defn migrate []
