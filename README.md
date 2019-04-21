@@ -27,7 +27,7 @@
   ```
 4. Create a mysql database. You can find all the tables an how to create them in: 
 
-src/ciclismo/models/cdb.clj
+   src/ciclismo/models/cdb.clj
 ## Prerequesites
 1. leiningen 2.0.0 or above installed
 2. jdk8 or above
