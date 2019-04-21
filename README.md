@@ -8,9 +8,8 @@
 
 1. Clone the repository
 2. Create directory resources/private
-3. Create a new folder "private" ex: resources/private
-4. Create a new config file ex: resources/private/config.clj
-3. Example of resources/private/config.clj 
+3. Create a new config file ex: resources/private/config.clj
+4. Example of resources/private/config.clj 
   ```
   {:db-protocol    "mysql"
   :db-name        "//localhost:3306/cc?characterEncoding=UTF-8"
