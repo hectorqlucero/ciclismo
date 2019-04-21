@@ -33,9 +33,9 @@
 ## Running
 Lein Run
 ## Demo
-hectorqlucero@gmail.com
-## Questions
 http://lucero-systems.cf
+## Questions
+hectorqlucero@gmail.com
 ## License
 
 Copyright © 2019 LS
