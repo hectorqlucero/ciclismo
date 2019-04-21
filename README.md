@@ -8,7 +8,7 @@
 
 1. Clone the repository
 2. Create directory resources/private
-3. Create a file resources/private/config.clj with the following contents:
+3. Update resources/private/config.clj with the correct information example replace xxxxxxxx with your data:
   ```
   {:db-protocol    "mysql"
   :db-name        "//localhost:3306/cc?characterEncoding=UTF-8"
