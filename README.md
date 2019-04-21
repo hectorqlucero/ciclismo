@@ -31,6 +31,7 @@
 2. jdk8 or above
 3. mySQL or MariaDB
 ## Running
+Go to project directory:
 Lein Run
 ## Demo
 http://lucero-systems.cf
