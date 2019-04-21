@@ -1,7 +1,7 @@
 /target
 /classes
 /checkouts
-/resources/private/config.clj
+config.clj
 profiles.clj
 pom.xml
 pom.xml.asc
