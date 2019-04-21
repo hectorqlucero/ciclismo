@@ -1,6 +1,7 @@
 /target
 /classes
 /checkouts
+/resources/private
 profiles.clj
 pom.xml
 pom.xml.asc
@@ -10,4 +11,3 @@ pom.xml.asc
 /.nrepl-port
 .hgignore
 .hg/
-/resources/private/config.clj
