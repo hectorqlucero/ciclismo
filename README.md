@@ -33,8 +33,8 @@
 ## Running
 Lein Run
 ## Demo
-## Questions
 hectorqlucero@gmail.com
+## Questions
 http://lucero-systems.cf
 ## License
 
