@@ -29,6 +29,7 @@
             <th data-options="field: 'donde', sortable: false">Donde Descripcion</th>
             <th data-options="field: 'fecha', sortable: true">Fecha</th>
             <th data-options="field: 'hora', sortable: true">Salida</th>
+            <th data-options="field: 'distancia', sortable: true">Distancia</th>
             <th data-options="field: 'puntos_p', sortable: true">Puntos(Participante)</th>
             <th data-options="field: 'puntos_1', sortable: false">Puntos(1r Lugar)</th>
             <th data-options="field: 'puntos_2', sortable: false">Puntos(2do Lugar)</th>
@@ -80,6 +81,10 @@
     <div class="form-group col-11">
       <label for="fecha">Fecha/Carrera:</label>
       <input id="fecha" name="fecha" class="form-control easyui-datebox" data-options="required:true">
+    </div>
+    <div class="form-group col-11">
+        <label for="organizador">Distancia Metros <small>(30520 metros)</small>:</label>
+        <input id="distancia" name="distancia" class="form-control easyui-numberbox" data-options="required: true,min:0,precision:0">
     </div>
     <div class="form-group col-11">
       <label for="hora">Salida:</label>

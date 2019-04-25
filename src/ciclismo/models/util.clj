@@ -533,3 +533,23 @@
   (let [hours (/ (parse-int seconds) 3600.0)
         speed (/ (/ (parse-int distance) 1000) hours)]
     (format "%.3f" speed)))
+
+(defn create-carreras-categorias []
+  "This is to create carreras_categorias example"
+  (doseq [item (Query db "SELECT * FROM categorias")]
+    (doseq [sitem (Query db "SELECT * FROM carreras")]
+      (let [carreras_id   (str (:id sitem))
+            categorias_id (str (:id item))
+            status        "T"
+            crow          (first (Query db ["SELECT * FROM carreras_categorias WHERE carreras_id = ? AND categorias_id = ?" carreras_id categorias_id]))
+            id            (:id crow)
+            postvars      (if (seq crow)
+                            {:id (str id)
+                             :carreras_id (str (:carreras_id crow))
+                             :categorias_id (str (:categorias_id crow))
+                             :status (str (:status crow))}
+                            {:id            (str id)
+                             :carreras_id   carreras_id
+                             :categorias_id categorias_id
+                             :status        status})]
+        (Save db :carreras_categorias postvars ["id = ?" id])))))

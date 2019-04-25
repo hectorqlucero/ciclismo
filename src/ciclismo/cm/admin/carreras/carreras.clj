@@ -4,13 +4,17 @@
             [ciclismo.models.grid :refer :all]
             [ciclismo.models.util
              :refer
-             [capitalize-words fix-hour fix-id format-date-internal parse-int]]
+             [capitalize-words
+              fix-hour fix-id
+              format-date-internal
+              parse-int
+              create-carreras-categorias]]
             [selmer.parser :refer [render-file]]))
 
 (defn carreras
   []
   (render-file "cm/admin/carreras/index.html" {:title "Carreras"}))
-
+(create-carreras-categorias)
 ;;start carreras grid
 (def search-columns
   ["id"
@@ -18,6 +22,7 @@
    "donde"
    "DATE_FORMAT(fecha,'%m/%d/%Y')"
    "TIME_FORMAT(hora,'%h:%i %p')"
+   "distancia"
    "puntos_p"
    "puntos_1"
    "puntos_2"
@@ -30,6 +35,7 @@
    "donde"
    "DATE_FORMAT(fecha,'%m/%d/%Y') as fecha"
    "TIME_FORMAT(hora,'%h:%i %p') as hora"
+   "distancia"
    "puntos_p"
    "puntos_1"
    "puntos_2"
@@ -62,6 +68,7 @@
    organizador,
    DATE_FORMAT(fecha,'%m/%d/%Y') as fecha,
    TIME_FORMAT(hora,'%H:%i') as hora,
+   distancia,
    puntos_p,
    puntos_1,
    puntos_2,
@@ -78,30 +85,34 @@
 
 (defn carreras-save
   [{params :params}]
-  (let [id       (fix-id (:id params))
-        puntos_p (:puntos_p params)
-        puntos_1 (:puntos_1 params)
-        puntos_2 (:puntos_2 params)
-        puntos_3 (:puntos_3 params)
-        status   (:status params)
-        postvars {:id                  id
-                  :descripcion         (capitalize-words (:descripcion params))
-                  :donde               (:donde params)
-                  :banco               (:banco params)
-                  :banco_cuenta        (:banco_cuenta params)
-                  :banco_instrucciones (:banco_instrucciones params)
-                  :organizador         (:organizador params)
-                  :fecha               (format-date-internal (:fecha params))
-                  :hora                (fix-hour (:hora params))
-                  :puntos_p            puntos_p
-                  :puntos_1            puntos_1
-                  :puntos_2            puntos_2
-                  :puntos_3            puntos_3
-                  :status              status}
-        result   (Save db :carreras postvars ["id = ?" id])
-        the-id   (if (nil? id) (get (first result) :generated_key nil) id)]
+  (let [id        (fix-id (:id params))
+        puntos_p  (:puntos_p params)
+        puntos_1  (:puntos_1 params)
+        puntos_2  (:puntos_2 params)
+        puntos_3  (:puntos_3 params)
+        status    (:status params)
+        distancia (:distancia params)
+        postvars  {:id                  id
+                   :descripcion         (capitalize-words (:descripcion params))
+                   :donde               (:donde params)
+                   :banco               (:banco params)
+                   :banco_cuenta        (:banco_cuenta params)
+                   :banco_instrucciones (:banco_instrucciones params)
+                   :organizador         (:organizador params)
+                   :fecha               (format-date-internal (:fecha params))
+                   :hora                (fix-hour (:hora params))
+                   :distancia           distancia
+                   :puntos_p            puntos_p
+                   :puntos_1            puntos_1
+                   :puntos_2            puntos_2
+                   :puntos_3            puntos_3
+                   :status              status}
+        result    (Save db :carreras postvars ["id = ?" id])
+        the-id    (if (nil? id) (get (first result) :generated_key nil) id)]
     (if (seq result)
-      (generate-string {:success "Correctamente Processado!"})
+      (do
+        (create-carreras-categorias)
+        (generate-string {:success "Correctamente Processado!"}))
       (generate-string {:error "No se pudo processar!"}))))
 
 (defn carreras-delete
