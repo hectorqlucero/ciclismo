@@ -34,7 +34,7 @@
                 <td><i>{{row.nombre}}</i><br><small>{{row.categoria}}</small></td>
                 <td align="center">
                     <span><strong>{{row.numero}}</strong></span><br>
-                    <input id="{{row.id}}_empezar" type="text" value="{{row.empezar}}" {% if row.empezar %} disabled {% endif %} style="width:60px;">
+                    <input id="{{row.id}}_empezar" type="text" value="{{row.empezar}}" disabled style="width:60px;">
                 </td>
                 <td align="center" valign="center">
                     <img src="/images/execute.png" alt="Edit" height="30" width="30" onclick="empezar({{row.id}})"/><br>
@@ -42,7 +42,7 @@
                 </td>
                 <td align="center">
                     <span><strong>{{row.numero}}</strong></span><br>
-                    <input id="{{row.id}}_terminar" type="text" value="{{row.terminar}}" {% if row.terminar %} disabled {% endif %} style="width:60px;">
+                    <input id="{{row.id}}_terminar" type="text" value="{{row.terminar}}" disabled style="width:60px;">
                 </td>
                 <td align="center" valign="center">
                     <img src="/images/execute.png" alt="Edit" height="30" width="30" onclick="terminar({{row.id}})"/><br>
