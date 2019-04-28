@@ -43,3 +43,19 @@
     (if (seq result)
       (generate-string {:time (str current-time)})
       (generate-string {:time "Not able to generate time!"}))))
+
+(defn empezar-edit [{params :params}]
+  (let [id        (:id params)
+        edit-time (:tiempo params)
+        result    (Update db :contrareloj {:empezar edit-time} ["id = ?" id])]
+    (if (seq result)
+      (generate-string {:time (str edit-time)})
+      (generate-string {:time "Not able to generate time!"}))))
+
+(defn terminar-edit [{params :params}]
+  (let [id        (:id params)
+        edit-time (:tiempo params)
+        result    (Update db :contrareloj {:terminar edit-time} ["id = ?" id])]
+    (if (seq result)
+      (generate-string {:time (str edit-time)})
+      (generate-string {:time "Not able to generate time!"}))))

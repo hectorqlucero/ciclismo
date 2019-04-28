@@ -11,31 +11,48 @@
 {% endblock %}
 
 {% block content %}
-<table class="table-dark table-striped table-bordered btn-table">
-  <thead class=".thead-dark">
-    <tr>
-      <th colspan=5>{{title}}</th>
-    </tr>
-    <tr>
-      <th>Numero</th>
-      <th>Nombre</th>
-      <th>Empezar</th>
-      <th>Terminar</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for row in rows %}
-    <tr>
-      <td><strong>{{row.numero}}</td>
-      <td><i>{{row.nombre}}</i><br><small>{{row.categoria}}</small></td>
-      <td><button id= "{{row.id}}_empezar" type="button" class="btn btn-primary" onclick="empezar({{row.id}})" {% if row.empezar %} disabled {% endif %}>{% if row.empezar %}{{row.empezar}}{% else %}<strong>{{row.numero}}</strong>&nbsp;&nbsp;Empezar{% endif %}</button>
-        &nbsp;&nbsp;<img src="/images/undo.png" alt="Edit" height="14" width="14" onclick="enable_button('#{{row.id}}_empezar')"/>
-        <td><button id="{{row.id}}_terminar" type="button" class="btn btn-primary" onclick="terminar({{row.id}})" {% if row.terminar %} disabled {% endif %}>{% if row.terminar %}{{row.terminar}}{% else %}<strong>{{row.numero}}</strong>&nbsp;&nbsp;Terminar{% endif %}</button>
-          &nbsp;&nbsp;<img src="/images/undo.png" alt="Edit" height="14" width="14" onclick="enable_button('#{{row.id}}_terminar')"/>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% csrf-field %}
+<div class="table-responsive-sm table-responsive-lg table-responsive-xl">
+    <table class="table-dark table-striped table-bordered btn-table">
+        <thead class="thead-dark">
+            <tr style="text-align:center;">
+                <th colspan=7>{{title}}</th>
+            </tr>
+            <tr style="text-align:center;">
+                <th>Numero</th>
+                <th>Nombre</th>
+                <th>Empezar</th>
+                <th></th>
+                <th>Terminar</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td><strong>{{row.numero}}</strong></td>
+                <td><i>{{row.nombre}}</i><br><small>{{row.categoria}}</small></td>
+                <td align="center">
+                    <span><strong>{{row.numero}}</strong></span><br>
+                    <input id="{{row.id}}_empezar" type="text" value="{{row.empezar}}" {% if row.empezar %} disabled {% endif %} style="width:60px;">
+                </td>
+                <td align="center" valign="center">
+                    <img src="/images/execute.png" alt="Edit" height="30" width="30" onclick="empezar({{row.id}})"/><br>
+                    <img src="/images/edit.png" alt="Edit" height="22" width="22" onclick="empezar_edit({{row.id}})"/>
+                </td>
+                <td align="center">
+                    <span><strong>{{row.numero}}</strong></span><br>
+                    <input id="{{row.id}}_terminar" type="text" value="{{row.terminar}}" {% if row.terminar %} disabled {% endif %} style="width:60px;">
+                </td>
+                <td align="center" valign="center">
+                    <img src="/images/execute.png" alt="Edit" height="30" width="30" onclick="terminar({{row.id}})"/><br>
+                    <img src="/images/edit.png" alt="Edit" height="22" width="22" onclick="terminar_edit({{row.id}})"/>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
 
 {% block scripts %}
@@ -45,24 +62,52 @@
 {% script "/js/jquery.maskedinput.min.js" %}
 {% script "/easyui/locale/easyui-lang-es.js" %}
 <script>
-  function enable_button(id) {
-    $(id).removeAttr('disabled', true);
-  }
+ var token = $('#__anti-forgery-token').val();
 
-function empezar(id) {
-  var empezar = "#" + id + "_empezar";
-  $(empezar).attr('disabled', true);
-  $.get("/contrareloj/empezar/tiempo/" + id,function(data) {
-    $(empezar).html(data.time);
-  }, "json");
-}
+ function enable_button(id) {
+     $(id).removeAttr('disabled');
+ }
 
-function terminar(id) {
-  var terminar = "#" + id + "_terminar";
-  $(terminar).attr('disabled', true);
-  $.get("/contrareloj/terminar/tiempo/" + id, function(data) {
-    $(terminar).html(data.time);
-  }, "json");
-}
+ function empezar(id) {
+     var empezar = "#" + id + "_empezar";
+     $(empezar).attr('disabled', true);
+     $.get("/contrareloj/empezar/tiempo/" + id,function(data) {
+         $(empezar).val(data.time);
+     }, "json");
+ }
+
+ function terminar(id) {
+     var terminar = "#" + id + "_terminar";
+     $(terminar).attr('disabled', true);
+     $.get("/contrareloj/terminar/tiempo/" + id, function(data) {
+         $(terminar).val(data.time);
+     }, "json");
+ }
+
+ function empezar_edit(id) {
+     var empezar = "#" + id + "_empezar";
+     enable_button(empezar);
+     $(empezar).change(function() {
+         $(empezar).attr('disabled', true);
+         var valor = $(empezar).val();
+         var url = "/contrareloj/empezar/editar";
+         $.post(url,{id: id, tiempo: valor, '__anti-forgery-token': token}, function(data) {
+             $(empezar).val(data.time);
+         }, "json");
+     });
+ }
+
+ function terminar_edit(id) {
+     var terminar = "#" + id + "_terminar";
+     enable_button(terminar);
+     $(terminar).change(function() {
+         $(terminar).attr('disabled', true);
+         var valor = $(terminar).val();
+         var url = "/contrareloj/terminar/editar";
+         $.post(url,{id: id, tiempo: valor, '__anti-forgery-token': token}, function(data) {
+             $(terminar).val(data.time);
+         }, "json");
+     });
+ }
 </script>
 {% endblock %}

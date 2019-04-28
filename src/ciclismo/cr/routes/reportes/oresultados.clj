@@ -12,5 +12,5 @@
         carreras_desc (:descripcion (first (Query db ["SELECT descripcion FROM carreras WHERE id = ?" carreras_id])))
         rows          (Query db [oresults-sql carreras_id])
         rows          (map #(assoc % :speed (str (calculate-speed (:distancia %) (:seconds %)) " km/h")) rows)]
-    (render-file "cr/c_resultados.html" {:title (str "Resultados/Overall: " carreras_desc  " (Distancia: " (:distancia (first rows)) " Metros)")
-                                                  :rows  rows})))
+    (render-file "cr/c_resultados.html" {:title         (str "Resultados/Overall: " carreras_desc  " (Distancia: " (:distancia (first rows)) " Metros)")
+                                         :rows rows})))

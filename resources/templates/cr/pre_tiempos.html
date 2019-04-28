@@ -1,0 +1,83 @@
+
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+
+{% block navbar_content %}
+{% include "cr/contrareloj_menu.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container col-8">
+    <div class="card-header">
+        <h4 class="mb-0"><span style="color:rgb(18,123,163);">{{title}}: Selecciona Carrera</span></h4>
+    </div>
+    <form id="ff" class="fm" method="post" action="/contrareloj/crear/tiempos" novalidate style="width:100%;background-color:#EFEFEF;">
+        {% csrf-field %}
+        <div class="form-group col-10" >
+            <div id="p"></div>
+        </div>
+        <div class="form-group col-10">
+            <label for="carreras_id">Seleccionar Carrera:</label>
+            <input id="carreras_id" name="carreras_id" class="form-control easyui-combobox" data-options="required:true,url:'/table_ref/carreras_all',method:'GET',
+                       onSelect:function(record){
+                       var url = '/table_ref/get-contrareloj/'+record.value;
+                       $('#p').panel({title: 'Informacion',href:url});
+                       }">
+        </div>
+        <div class="form-group col-10" >
+            <span>
+                Desde el numbero:
+                <input name="min_number" type="text" class="form-control easyui-numberbox"
+                       data-options="required:true,min:1,precision:0,width:40">
+            </span>
+            <span>
+                Hasta el numbero:
+                <input id="maximo" name="max_number" type="text" class="form-control easyui-numberbox"
+                       data-options="required:true,min:1,precision:0,width:40"
+                >
+            </span>
+        </div>
+        <div class="form-group col-10" >
+            <label for="start_time" >Empezar Tiempo(<small>ex: 08:00</small>):</label>
+            <input name="start_time" class="form-control easyui-timespinner"
+                   data-options="required:true,width:80" >
+        </div>
+        <div class="form-group col-10" >
+            <label for="intervalos" >Salir Cada Cuantos Minutos:</label>
+            <input name="intervalos" class="form-control easyui-numberbox"
+                   data-options="required:true,min:1,precision:0,width:40" >
+        </div>
+        <div class="form-group col-10">
+            <input id="exoneracion_select" type="submit" class="btn btn-primary" value="Processar">
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+<script>
+ $(document).ready(function() {
+     $("#maximo").numberbox({
+         onChange: function() {
+             var carrera = $("#carreras_id").combobox('getValue');
+             if(carrera) {
+                 $("#p").panel({
+                     title: "Informacion",
+                     href: '/table_ref/get-contrareloj/' + carrera,
+                 });
+             }
+         }
+     });
+ });
+</script>
+{% endblock %}

@@ -122,6 +122,64 @@
     the-table))
 ;; End carreras-categorias
 
+;; Start max_count
+(def max_count-sql
+  "SELECT
+  MAX(id) as max_count
+  FROM contrareloj
+  WHERE
+  carreras_id = ?")
+
+(defn get-max-count [carreras_id]
+  (:max_count (first (Query db [max_count-sql carreras_id]))))
+;; End max_count
+
+;; Start min_count
+(def min_count-sql
+  "SELECT
+  MIN(no_participacion) as min_count
+  FROM cartas
+  WHERE
+  carreras_id = ?")
+
+(defn get-min-count [carreras_id]
+  (:min_count (first (Query db [min_count-sql carreras_id]))))
+;; End min_count
+
+;; Start max_time
+(def max_time-sql
+  "SELECT
+  TIME_FORMAT(MAX(empezar),'%H:%i:%s') as max_time
+  FROM contrareloj
+  WHERE
+  carreras_id = ?")
+
+(defn get-max-time [carreras_id]
+  (:max_time (first (Query db [max_time-sql carreras_id]))))
+;; End max_time
+
+;; Start contrareloj panel
+(def ultimo-numero-sql
+  "
+  SELECT
+  id
+  FROM contrareloj
+  WHERE
+  empezar IS NOT NULL
+  AND carreras_id = ?
+  ORDER BY id desc
+  LIMIT 1")
+
+(defn get-ultimo-numero [carreras_id]
+  (:id (first (Query db [ultimo-numero-sql carreras_id]))))
+
+(defn get-contrareloj [carreras_id]
+  (str "
+  <label>Numero Maximo:</label><strong> " (get-max-count carreras_id) "</strong><br>
+  <label>Numeros Processados:</label><strong> " (get-ultimo-numero carreras_id) "</strong><br>
+  <label>Tiempo Maximo:</label><strong> " (get-max-time carreras_id) "</strong>"))
+;; End contrareloj panel
+
 (defroutes table_ref-routes
   (GET "/table_ref/carreras/categorias/:carreras_id/:categorias_id" [carreras_id categorias_id] (carreras-categorias carreras_id categorias_id))
   (GET "/table_ref/get_users" [] (generate-string (Query db [get_users-sql])))
@@ -139,4 +197,7 @@
   (GET "/table_ref/carreras" [] (generate-string (Query db get_carreras-sql)))
   (GET "/table_ref/carreras_all" [] (generate-string (Query db get_carreras_all-sql)))
   (GET "/table_ref/nombres" [] (generate-string (Query db nombres-sql)))
-  (GET "/table_ref/correos" [] (generate-string (Query db correos-sql))))
+  (GET "/table_ref/correos" [] (generate-string (Query db correos-sql)))
+  (GET "/table_ref/max_count/:carreras_id" [carreras_id] (generate-string (get-max-count carreras_id)))
+  (GET "/table_ref/max_time/:carreras_id" [carreras_id] (generate-string (get-max-time carreras_id)))
+  (GET "/table_ref/get-contrareloj/:carreras_id" [carreras_id] (get-contrareloj carreras_id)))
