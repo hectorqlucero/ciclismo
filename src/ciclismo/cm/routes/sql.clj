@@ -147,7 +147,7 @@
 
 (defn build-body-p2 [row carreras-row]
   (str "Yo " (:nombre row) ", Con el número de participación " (:no_participacion row) " por el solo hecho de firmar
-este documento, accepto cualquier y todos los riesgos y peligros que sobre mi persona recaigan en cuanto a mi participación
+este documento, acepto cualquier y todos los riesgos y peligros que sobre mi persona recaigan en cuanto a mi participación
 en Evento ciclista denominado \"" (:descripcion carreras-row) "\". Por lo tanto, yo soy el único responsable de mi salud.
 cualquier consecuencia, accidentes, perjuicios, deficiencias que puedan causar, de cualquier manera, posibles alteraciones
 a mi salud, integridad fisica, o inclusive muerte. Por esa razón libero de cualquier responsabilidad al respecto al Comité
@@ -159,7 +159,7 @@ personales."))
 
 (defn build-blank-p2 [carreras-row]
   (str "Yo _______________, Con el número de participación _____ por el solo hecho de firmar
-este documento, accepto cualquier y todos los riesgos y peligros que sobre mi persona recaigan en cuanto a mi participación
+este documento, acepto cualquier y todos los riesgos y peligros que sobre mi persona recaigan en cuanto a mi participación
 en Evento ciclista denominado \"" (:descripcion carreras-row) "\". Por lo tanto, yo soy el único responsable de mi salud.
 cualquier consecuencia, accidentes, perjuicios, deficiencias que puedan causar, de cualquier manera, posibles alteraciones
 a mi salud, integridad fisica, o inclusive muerte. Por esa razón libero de cualquier responsabilidad al respecto al Comité
@@ -173,7 +173,7 @@ personales."))
   (str "También reconozco y acepto que como participante del EVENTO \"" (:descripcion carreras-row) "\", deberé portar en
   todo momento el número de participante proporcionado por los organizadores del EVENTO, en el entendido que dicho
   número no podrán ser transferidas o intercambiadas con cualquier tercero bajo ningún concepto, por lo que si no cuento
-  con la misma, los organizadores del EVENTO, podrán retirarme del mismo, leberándolos de toda responsabilidad, asi como
+  con la misma, los organizadores del EVENTO, podrán retirarme del mismo, liberándolos de toda responsabilidad, asi como
   renunciando a ejercer cualquier acción legal en su contra por las acciones tomadas a este respecto."))
 
 (defn build-body-p4 [carreras-row]
