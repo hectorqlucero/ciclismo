@@ -166,8 +166,8 @@
     :size        8
     :border      true}
    [[:cell {:colspan 3 :align :center :style :bold} "PARTICIPANTE"]]
-   [[:cell {:style :bold :colspan 3} (str "Categoria: " (:categoria row))]]
-   [[:cell {:style :bold} (str "Nombre completo: " (:nombre row))] [:cell {:style :bold} (str "Equipo: " (:equipo row))] [:cell {:style :bold} (str "Numero de Participacion: " (:no_participacion row))]]
+   [[:cell {:style :bold :colspan 2} (str "Categoria: " (:categoria row))] [:cell {:style :bold} (str "Tipo de Bicicleta:")]]
+   [[:cell {:style :bold} (str "Nombre completo: " (:nombre row))] [:cell {:style :bold} (str "Equipo: " (:equipo row))] [:cell {:style :bold} (str "Numero: " (:no_participacion row))]]
    [[:cell {:style :bold} (str "Telefono: " (:telefono row))] [:cell {:style :bold :colspan 2} (str "Email: " (:email row))]]
    [[:cell {:style :bold :colspan 3} (str "Nombre del padre o tutor (En su caso): ")]]
    [[:cell {:style :bold :colspan 3} (str "Firma del participante y/o tutor: ")]]])
