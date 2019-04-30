@@ -1,6 +1,7 @@
 (ns ciclismo.core
   (:gen-class)
-  (:require [ciclismo.models.crud :refer [config db KEY Query]]
+  (:require [org.httpkit.server :as server]
+            [ciclismo.models.crud :refer [config db KEY Query]]
             [ciclismo.routes :refer [ciclismo-routes]]
             [ciclismo.admin :refer [admin-routes]]
             [compojure.core :refer :all]
@@ -90,7 +91,7 @@
   (route/not-found "Not Found"))
 
 (defn -main []
-  (jetty/run-jetty
+  (server/run-server
    (-> (routes
         public-routes
         (wrap-login protected-routes)
@@ -106,4 +107,5 @@
                           (assoc-in [:session :store] (cookie-store {:key KEY}))
                           (assoc-in [:session :cookie-attrs] {:max-age 28800})
                           (assoc-in [:session :cookie-name] "LS"))))
-   {:port (:port config)}))
+   {:port (:port config)}
+   (println (str "Running webserver at http:/0.0.0.0:" (:port config) "/"))))

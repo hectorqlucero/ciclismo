@@ -33,7 +33,7 @@ body {
             <input id="carreras_id" name="carreras_id" class="form-control easyui-combobox" data-options="url:'/table_ref/carreras',
             method:'GET',
             onSelect:function(record){
-            var url = '/table_ref/carreras_categorias/'+record.value;
+            var url = '/table_ref/get_categorias/'+record.value;
             $('#categoria').combobox('reload',url);
             }">
         </div>
