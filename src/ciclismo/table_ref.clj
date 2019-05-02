@@ -1,7 +1,7 @@
 (ns ciclismo.table_ref
   (:require [cheshire.core :refer [generate-string]]
             [ciclismo.models.crud :refer [db Query]]
-            [ciclismo.models.util :refer [current_year parse-int]]
+            [ciclismo.models.util :refer [current_year parse-int current_time_internal]]
             [compojure.core :refer [defroutes GET]]))
 
 (def get_users-sql
@@ -200,4 +200,5 @@
   (GET "/table_ref/correos" [] (generate-string (Query db correos-sql)))
   (GET "/table_ref/max_count/:carreras_id" [carreras_id] (generate-string (get-max-count carreras_id)))
   (GET "/table_ref/max_time/:carreras_id" [carreras_id] (generate-string (get-max-time carreras_id)))
-  (GET "/table_ref/get-contrareloj/:carreras_id" [carreras_id] (get-contrareloj carreras_id)))
+  (GET "/table_ref/get-contrareloj/:carreras_id" [carreras_id] (get-contrareloj carreras_id))
+  (GET "/table_ref/reloj" [] (current_time_internal)))

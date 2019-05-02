@@ -25,7 +25,7 @@
                  [ring/ring-anti-forgery "1.3.0"]
                  [ring/ring-defaults "0.3.2"]
                  [http-kit "2.3.0"]]
-  :main ^:skip-aot ciclismo.core
+  :main ciclismo.core
   :aot [ciclismo.core]
   :plugins [[lein-ancient "0.6.10"]
             [lein-pprint "1.1.2"]]

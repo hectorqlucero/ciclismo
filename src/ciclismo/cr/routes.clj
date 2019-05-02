@@ -3,6 +3,7 @@
             [ciclismo.cr.routes.crear-carrera :as crear-carrera]
             [ciclismo.cr.routes.crear-tiempos :as crear-tiempos]
             [ciclismo.cr.routes.tiempo :as tiempo]
+            [ciclismo.cr.routes.clock :as clock]
             [ciclismo.cr.routes.reportes.resultados :as resultados]
             [ciclismo.cr.routes.reportes.cresultados :as cresultados]
             [ciclismo.cr.routes.reportes.oresultados :as oresultados]
@@ -22,6 +23,7 @@
   (GET "/contrareloj/terminar/tiempo/:id" [id] (tiempo/terminar-time id))
   (POST "/contrareloj/empezar/editar" request [] (tiempo/empezar-edit request))
   (POST "/contrareloj/terminar/editar" request [] (tiempo/terminar-edit request))
+  (GET "/reloj" request [] (clock/get-clock request))
   (GET "/contrareloj/resultados" request [] (resultados/resultados request))
   (POST "/contrareloj/resultados" request [] (resultados/process request))
   (GET "/contrareloj/cresultados" request [] (cresultados/resultados request))
