@@ -23,8 +23,7 @@
                  [ring/ring-devel "1.7.1" :exclusions [commons-codec ring/ring-codec]]
                  [ring/ring-core "1.7.1" :exclusions [commons-codec ring/ring-codec]]
                  [ring/ring-anti-forgery "1.3.0"]
-                 [ring/ring-defaults "0.3.2"]
-                 [http-kit "2.3.0"]]
+                 [ring/ring-defaults "0.3.2"]]
   :main ciclismo.core
   :aot [ciclismo.core]
   :plugins [[lein-ancient "0.6.10"]
