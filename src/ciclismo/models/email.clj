@@ -37,7 +37,7 @@
 
 (def body
   {:from    "hectorqlucero@gmail.com"
-   :to      "marthalucero56@gmail.com"
+   :to      "hectorqlucero@gmail.com"
    :subject "Hi!"
    :body    [{:type    "text/html;charset=utf-8"
               :content "<b>Testing</b>"}]})

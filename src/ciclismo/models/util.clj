@@ -2,6 +2,8 @@
   (:require [ciclismo.models.crud :refer :all]
             [clj-time.core :as t]
             [clj-time.format :as f]
+            [clj-time.coerce :as c]
+            [clj-jwt.core :refer :all]
             [clojure.string :refer [join]]
             [clojurewerkz.money.amounts :as ma]
             [clojurewerkz.money.currencies :as mc]
@@ -52,9 +54,47 @@
 
 (def external-time-parser (f/formatter tz "hh:mm:ss a" "H:k:s"))
 
+(defn get-base-url [request]
+  (str (subs (str (:scheme request)) 1) "://" (:server-name request) ":" (:server-port request)))
+
+(defn get-reset-url [request token]
+  (str (get-base-url request) "/escuela/reset_password/" token))
+
+;; Start jwt token
+(defn create-token [k]
+  "Creates jwt token with 10 minutes expiration time"
+  (let [data {:iss k
+              :exp (t/plus (t/now) (t/minutes 10))
+              :iat (t/now)}]
+    (-> data jwt to-str)))
+
+(defn decode-token [t]
+  "Decodes jwt token"
+  (-> t str->jwt :claims))
+
+(defn verify-token [t]
+  "Verifies that token is good"
+  (-> t str->jwt verify))
+
+(defn check-token [t]
+  "Checks if token verifes and it's not expired, returns matricula or nil"
+  (let [token     (decode-token t)
+        exp       (:exp token)
+        cexp      (c/to-epoch (t/now))
+        matricula (:iss token)]
+    (if (and (verify-token t) (> exp cexp))
+      matricula
+      nil)))
+;; End jwt token
+
 (defn get-session-id []
   (try
     (session/get :user_id)
+    (catch Exception e nil)))
+
+(defn get-matricula-id []
+  (try
+    (session/get :matricula)
     (catch Exception e nil)))
 
 (defn current_date []
@@ -451,7 +491,7 @@
        (nil? photo-val)
        (nil? uuid))
     nil
-    (str "<img src='" (:path config)  photo-val "?t=" uuid "' onError=\"this.src='/images/placeholder_profile.png'\" width='95' height='71'></img>")))
+    (str "<img src='" (str (:path config) "/es/")  photo-val "?t=" uuid "' onError=\"this.src='/images/placeholder_profile.png'\" width='95' height='71'></img>")))
 
 (defn get-photo [table-name field-name id-name id-value]
   (let [photo-val   (get-photo-val table-name field-name id-name id-value)

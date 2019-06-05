@@ -3,10 +3,12 @@
             [ciclismo.table_ref :refer [table_ref-routes]]
             [ciclismo.cm.routes :refer [cm-routes]]
             [ciclismo.cc.routes :refer [cc-routes]]
-            [ciclismo.cr.routes :refer [cr-routes]]))
+            [ciclismo.cr.routes :refer [cr-routes]]
+            [ciclismo.es.routes :refer [es-routes]]))
 
 (defroutes ciclismo-routes
   table_ref-routes
   cm-routes
   cc-routes
-  cr-routes)
+  cr-routes
+  es-routes)
