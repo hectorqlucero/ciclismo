@@ -13,4 +13,5 @@
   (POST "/escuela/rpaswd" request [] (registro/reset-password! request))
   (GET "/escuela/reset_password/:token" [token] (registro/reset-jwt token))
   (POST "/escuela/reset_password" request [] (registro/reset-jwt! request))
-  (GET "/escuela/logoff" request [] (registro/logoff request)))
+  (GET "/escuela/logoff" request [] (registro/logoff request))
+  (GET "/escuela/r_alumnos" request [] (registro/r-alumnos request)))

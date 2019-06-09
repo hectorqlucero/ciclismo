@@ -75,7 +75,7 @@
       (do
         (session/put! :matricula matricula)
         (session/put! :is_authenticated true)
-        (generate-string {:url "/escuela"}))
+        (generate-string {:url (str "/escuela/matricula/" matricula)}))
       (generate-string {:error "No se pudo actualizar el Registro!"}))))
 
 ;; Start matricula
@@ -114,7 +114,7 @@
       (do
         (session/put! :matricula matricula)
         (session/put! :is_authenticated true)
-        (generate-string {:url "/escuela"}))
+        (generate-string {:url (str "/escuela/matricula/" matricula)}))
       (generate-string {:error "No se pudo actualizar el Registro!"}))))
 
 ;; Start reset-password
@@ -138,7 +138,9 @@
     body))
 
 (defn reset-password [request]
-  (render-file "es/rpaswd.html" {:title "Resetear Contraseña"}))
+  (if (get-matricula-id)
+    (render-file "404.html" {:title "Existe una session, no se puede cambiar la contraseña"})
+    (render-file "es/rpaswd.html" {:title "Resetear Contraseña"})))
 
 (defn reset-password! [request]
   (let [params     (:params request)
@@ -168,6 +170,24 @@
       (generate-string {:url "/escuela"})
       (generate-string {:error "No se pudo cambiar su contraseña!"}))))
 ;; End reset-password
+
+;; Start alumnos report
+(def r-alumnos-sql
+  "
+  SELECT
+  *
+  FROM alumnos
+  ORDER BY
+  apell_paterno,
+  apell_materno,
+  nombre
+  ")
+
+(defn r-alumnos [request]
+  (render-file "es/alumnos_report.html" {:title "Reporte De Alumnos"
+                                         :matricula (get-matricula-id)
+                                         :rows (Query db r-alumnos-sql)}))
+;; End alumnos report
 
 (defn logoff [_]
   (session/clear!)
