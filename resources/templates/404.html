@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
+{% block navbar_content %}{% endblock %}}
+
 {% block content %}
-<h1>{{ title }}</h1>
-<p><h3>Error: {{ error }}</h3></p>
-<p><h3><a href="/">Regresar</a></h3></p>
+<div>
+    <p><h3><b>Error:</b> {{ error }}</h3></p>
+    <p><h3><a href="{{ return-url }}">Clic aqui para <b>Regresar</b></a></h3></p>
+</div>
 {% endblock %}

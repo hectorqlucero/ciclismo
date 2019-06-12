@@ -46,7 +46,8 @@
 
 (defn registrar [request]
   (if (get-matricula-id)
-    (redirect "/escuela")
+    (render-file "404.html" {:error "Existe una session, no se puede crear una nueva Matricula."
+                             :return-url "/escuela"})
     (render-file "es/registrar.html" {:title "Registro De Alumno"
                                           :matricula nil
                                           :foto (get-photo "alumnos" "foto" "matricula" nil)})))
@@ -139,7 +140,8 @@
 
 (defn reset-password [request]
   (if (get-matricula-id)
-    (render-file "404.html" {:title "Existe una session, no se puede cambiar la contraseña"})
+    (render-file "404.html" {:error "Existe una session, no se puede cambiar la contraseña"
+                             :return-url "/escuela"})
     (render-file "es/rpaswd.html" {:title "Resetear Contraseña"})))
 
 (defn reset-password! [request]
