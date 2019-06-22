@@ -1,14 +1,23 @@
 (ns ciclismo.cm.routes.home
   (:require [cheshire.core :refer [generate-string]]
             [ciclismo.models.crud :refer [db Query]]
-            [ciclismo.models.util :refer [get-session-id]]
+            [ciclismo.models.util :refer [get-session-id refran]]
             [noir.session :as session]
             [noir.util.crypt :as crypt]
             [noir.response :refer [redirect]]
             [selmer.parser :refer [render-file]]))
 
 (defn slide [request]
-  (render-file "cm/carousel.html" {:title "Reto San Felipe"}))
+  (render-file "cm/carousel.html" {:title1 (refran)
+                                   :title2 (refran)
+                                   :title3 (refran)
+                                   :title4 (refran)
+                                   :title5 (refran)
+                                   :title6 (refran)
+                                   :title7 (refran)
+                                   :title8 (refran)
+                                   :title9 (refran)
+                                   :title10 (refran)}))
 
 (defn login [_]
   (if-not (nil? (get-session-id))

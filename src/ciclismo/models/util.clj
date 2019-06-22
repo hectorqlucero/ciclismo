@@ -593,3 +593,9 @@
                              :categorias_id categorias_id
                              :status        status})]
         (Save db :carreras_categorias postvars ["id = ?" id])))))
+
+(defn refran []
+  (let [number (rand-int 31)
+        number (if (= number 0) 1 number)
+        refran (:descripcion (first  (Query db ["SELECT descripcion FROM refranes WHERE id = ?" number])))]
+    refran))
