@@ -1,5 +1,6 @@
 (ns ciclismo.cm.routes.cuadrantes
   (:require [ciclismo.models.crud :refer [db Query]]
+            [ciclismo.models.util :refer [capitalize-words]]
             [selmer.parser :refer [render-file]]))
 
 (def sql
@@ -15,6 +16,7 @@
    FROM cuadrantes ORDER BY name")
 
 (defn cuadrantes-reporte []
-  (let [rows (Query db sql)]
+  (let [rows (Query db sql)
+        rows (map #(assoc % :leader (capitalize-words (:leader %))) rows)]
     (render-file "cm/cuadrantes.html" {:title "Talleres de bicicletas"
                                        :rows  rows})))
