@@ -23,11 +23,27 @@
                "ninguno")]
     data))
 
+(defn build-cal-popup [row]
+  (str
+  "<html>"
+  "<body>"
+  "<div style='margin-bottom:5px;'><label><strong>Titulo: </strong>" (:title row) "</div>"
+  "<div style='margin-bottom:5px;'><label><strong>Describir Rodadas: </strong>" (:description row) "</div>"
+  "<div style='margin-bottom:5px;'><label><strong>Punto de reunion: </strong>" (:donde row) "</div>"
+  "<div style='margin-bottom:5px;'><label><strong>Nivel: </strong>" (:nivel row) "</div>"
+  "<div style='margin-bottom:5px;'><label><strong>Distancia: </strong>" (:distancia row) "</div>"
+  "<div style='margin-bottom:5px;'><label><strong>Velocidad: </strong>" (:velocidad row) "</div>"
+  "<div style='margin-bottom:5px;'><label><strong>Fecha/Rodada: </strong>" (:fecha row) "</div>"
+  "<div style='margin-bottom:5px;'><label><strong>Salida: </strong>" (:hora row) "</div>"
+  "<div style='margin-bottom:5px;'><label><strong>Lider: </strong>" (:leader row) "</div>"
+  "<div style='margin-bottom:5px;'><label><strong>Lider Email: </strong>" (:email row) "</div>")
+  )
+
 (defn main [request]
   (purge)
   (repeat-event)
   (let [rows   (Query db rodadas-sql)
-        rows   (map #(assoc % :confirmados (process-confirmados (:id %))) rows)
+        rows   (map #(assoc % :modal_html (build-cal-popup %)) rows)
         events (generate-string rows)]
     (render-file "cm/main.html" {:title  (str "Calendario de Eventos - Haz clic en el evento para confirmar asistencia")
                                  :events events})))

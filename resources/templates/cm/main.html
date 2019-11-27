@@ -8,86 +8,64 @@
 {% style "/font/css/all.min.css" %}
 {% style "/fullcalendar/fullcalendar.min.css" %}
 <link href='/fullcalendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
-<style>
+{% endblock %}
 
-  body {
-    margin: 0;
-    padding: 0;
-    font-size: 14px;
-  }
-
-  #top,
-  #calendar.fc-unthemed {
-    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-  }
-
-  #top {
-    background: #eee;
-    border-bottom: 1px solid #ddd;
-    padding: 0 10px;
-    line-height: 40px;
-    font-size: 12px;
-    color: #000;
-  }
-
-  #top .selector {
-    display: inline-block;
-    margin-right: 10px;
-  }
-
-  #top select {
-    font: inherit; /* mock what Boostrap does, don't compete  */
-  }
-
-  .left { float: left }
-  .right { float: right }
-  .clear { clear: both }
-
-  #calendar {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 0 10px;
-  }
-
-</style>
+{% block content %}
+<div id="calendar"></div>
+<div id="fullCalModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="modalTitle" class="model-title"></h4>
+        <button class="close" type="button" data-dismiss="modal">
+          <span aria-hidden="true">x</span>
+          <span class="sr-only">Cerrar</span>
+        </button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Regresar al Calendario</button>
+        <a id="eventUrl" class="btn btn-primary" target="_blank">Confirmar Asistencia</a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
+{% script "/popper/popper.min.js" %}
+{% script "/bootstrap/js/bootstrap.min.js" %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+{% script "/js/defaultGrid.js" %}
+{% script "/js/extra.js" %}
 {% script "/font/js/all.min.js" %}
 {% script "/fullcalendar/lib/moment.min.js" %}
 {% script "/fullcalendar/fullcalendar.min.js" %}
 {% script "/fullcalendar/locale-all.js" %}
 <script>
-	$(function() {
+	$(document).ready(function() {
 		$('#calendar').fullCalendar({
-			defaultView: 'month',
 			themeSystem: 'bootstrap4',
+      eventLimit: true,
+      displayEventTime: true,
+      timeFormat: 'h(:mm) t',
 			header: {
 				left: 'prev,next today',
 				center: 'title',
-				right: 'month,agendaWeek,agendaDay,listMonth'
+				right: ''
 			},
 			locale: 'es',
-			navLinks: true, // can click day/week names to navigate views
-			editable: true,
-			eventLimit: true, // allow "more" link when too many events
-			showNonCurrentDates: false,
-			displayEventTime: true,
-			timeFormat: 'h(:mm) t',
 			events: {{ events|safe }},
-			eventClick: function(calEvent, jsEvent) {
-				var tdesc = calEvent.email || "";
-				if (calEvent.rodada == 'T') {
-					var datos = 'Titulo: ' + calEvent.title + '\nDescripcion: ' + calEvent.description + '\nNivel: ' + calEvent.nivel + '\nDistancia: ' + calEvent.distancia + '\nVelocidad: ' + calEvent.velocidad + '\nPunto de reunión: ' + calEvent.donde + '\nSalida: ' + calEvent.hora + '\nLider: ' + calEvent.leader + '\nEmal: ' + tdesc + '\nConfirmados: ' + calEvent.confirmados + '\n\nCancelar/Cancel: Regresar al Calendario\nAceptar/OK: Para confirmar asistencia';
-				} else {
-					var datos = 'Titulo: ' + calEvent.title + '\nDescripcion: ' + calEvent.description + '\nPunto de reunión: ' + calEvent.donde + '\nSalida: ' + calEvent.hora +'\nQuién Organiza: ' + calEvent.leader + '\nEmal: ' + tdesc;
-				}
-				var r = confirm(datos);
-				if(calEvent.rodada == 'T') {
-          if (! r) return false;
-				} else {
-					return false;
-				}
+			eventClick: function(calEvent, jsEvent, view) {
+        $('#modalTitle').html(calEvent.title);
+        $('#modalBody').html(calEvent.modal_html);
+        $('#eventUrl').attr('href', calEvent.url);
+        $('#fullCalModal').modal();
+        return false;
 			},
 			eventMouseover: function(calEvent, jsEvent) {
 				var tdesc = calEvent.email || "";
@@ -127,7 +105,6 @@
 			},
 		});
 	});
- $(".tooltipevent").css("overflow-y","scroll");
 </script>
 {% endblock %}
 {% block content %}
