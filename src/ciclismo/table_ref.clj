@@ -1,7 +1,7 @@
 (ns ciclismo.table_ref
   (:require [cheshire.core :refer [generate-string]]
             [ciclismo.models.crud :refer [db Query]]
-            [ciclismo.models.util :refer [current_year parse-int current_time_internal]]
+            [ciclismo.models.util :refer [current_year parse-int current_time_internal get-image]]
             [compojure.core :refer [defroutes GET]]))
 
 (def get_users-sql
@@ -183,7 +183,11 @@
   <label>Tiempo Maximo:</label><strong> " (get-max-time carreras_id) "</strong>"))
 ;; End contrareloj panel
 
+(defn imagen [table field idname value & extra-folder]
+  (get-image table field idname value (first extra-folder)))
+
 (defroutes table_ref-routes
+  (GET "/table_ref/get_imagen/:id" [id] (imagen "rodadas" "imagen" "id" id "eventos/"))
   (GET "/table_ref/carreras/categorias/:carreras_id/:categorias_id" [carreras_id categorias_id] (carreras-categorias carreras_id categorias_id))
   (GET "/table_ref/get_users" [] (generate-string (Query db [get_users-sql])))
   (GET "/table_ref/alumnos/:matricula" [matricula] (generate-string (get-alumno matricula)))

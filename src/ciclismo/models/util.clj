@@ -1,5 +1,6 @@
 (ns ciclismo.models.util
   (:require [ciclismo.models.crud :refer :all]
+            [clojure.java.io :as io]
             [clj-time.core :as t]
             [clj-time.format :as f]
             [clj-time.coerce :as c]
@@ -501,10 +502,51 @@
     (if (empty? photo-val) placeholder photo)))
 
 (defn get-thumbnail [photo-val]
-  (let [uuid (str (UUID/randomUUID))
+  (let [uuid        (str (UUID/randomUUID))
         placeholder "<img src='/images/placeholder_profile.png' width='42' height='42'></img>"
-        photo (str "<img src='/uploads/patient_images/" photo-val "?t=" uuid "'  onError=\"this.src='/images/placeholder_profile.png'\" width='42' height='42'></img>")]
+        photo       (str "<img src='/uploads/patient_images/" photo-val "?t=" uuid "'  onError=\"this.src='/images/placeholder_profile.png'\" width='42' height='42'></img>")]
     (if (empty? photo-val) placeholder photo)))
+
+;; Start image stuff
+(defn build-img-html [img-val uuid path]
+  (if (or
+        (nil? img-val)
+        (nil? uuid))
+    nil
+    (str "<img src='" path  img-val "?t=" uuid "' onError=\"this.src='/images/placeholder_profile.png'\" width='95' height='71'></img>")))
+
+(defn get-img-val [table-name field-name id-name id-value]
+  (if (or
+        (nil? table-name)
+        (nil? field-name)
+        (nil? id-name)
+        (nil? id-value))
+    nil
+    ((keyword field-name) (first (Query db (str "SELECT " field-name " FROM " table-name " WHERE " id-name " = " id-value))))))
+
+(defn get-image [table-name field-name id-name id-value & extra-folder]
+  "Get an image from a table and specify extra folder 
+   ex. (get-image 'eventos' 'imagen' 'id' 6 "
+  (let [img-val     (get-img-val table-name field-name id-name id-value)
+        uuid        (str (UUID/randomUUID))
+        path        (str (:path config) (first extra-folder))
+        placeholder "<img src='/images/placeholder_profile.png' width='95' height='71'>"
+        image       (build-img-html img-val uuid path)]
+    (if (empty? img-val) placeholder image)))
+
+(defn upload-image [file id path]
+  "Uploads image and renames it to the id passed"
+  (let [tempfile   (:tempfile file)
+        size       (:size file)
+        type       (:content-type file)
+        extension  (peek (clojure.string/split type #"\/"))
+        extension  (if (= extension "jpeg") "jpg" "jpg")
+        filename   (:filename file)
+        image-name (str id "." extension)
+        result     (if-not (zero? size)
+                     (do (io/copy tempfile (io/file (str path image-name)))))]
+    image-name))
+;; End image stuff
 
 (defn capitalize-words
   "Captitalizar todas las palabras en una hilera"
@@ -565,9 +607,9 @@
 
 (defn create-categorias [rows]
   (map (fn [cid]
-         {:carreras_id cid
+         {:carreras_id   cid
           :categorias_id cid
-          :categoria (get-description "categorias" "descripcion" "id" cid)}) (into '() (into #{} (map #(str (:categorias_id %)) rows)))))
+          :categoria     (get-description "categorias" "descripcion" "id" cid)}) (into '() (into #{} (map #(str (:categorias_id %)) rows)))))
 
 (defn calculate-speed [distance seconds]
   (let [hours (/ (parse-int seconds) 3600.0)

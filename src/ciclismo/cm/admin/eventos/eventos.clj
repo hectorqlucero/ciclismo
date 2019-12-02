@@ -1,6 +1,6 @@
 (ns ciclismo.cm.admin.eventos.eventos
   (:require [cheshire.core :refer [generate-string]]
-            [ciclismo.models.crud :refer [db Delete Query Save]]
+            [ciclismo.models.crud :refer [config db Delete Query Save]]
             [ciclismo.models.email :refer [host send-email]]
             [ciclismo.models.grid :refer :all]
             [ciclismo.models.util
@@ -10,6 +10,7 @@
               format-date-internal
               get-session-id
               parse-int
+              upload-image
               user-email
               user-level]]
             [selmer.parser :refer [render-file]]))
@@ -89,23 +90,27 @@
 (defn eventos-save
   [{params :params}]
   (try
-    (let [id       (fix-id (:id params))
-          user     (or (get-session-id) "Anonimo")
-          repetir  "F"
-          anonimo  (if (= user "Anonimo") "T" "F")
-          postvars {:id                id
-                    :descripcion       (:descripcion params)
-                    :descripcion_corta (:descripcion_corta params)
-                    :punto_reunion     (:punto_reunion params)
-                    :fecha             (format-date-internal (:fecha params))
-                    :hora              (fix-hour (:hora params))
-                    :leader            (:leader params)
-                    :leader_email      (:leader_email params)
-                    :cuadrante         (:cuadrante params)
-                    :repetir           repetir
-                    :rodada            "F"
-                    :anonimo           anonimo}
-          result   (Save db :rodadas postvars ["id = ?" id])]
+    (let [id         (fix-id (:id params))
+          file       (:file params)
+          image-name (if-not (zero? (:size file))
+                       (upload-image file id (str (config :uploads) "/eventos/")))
+          user       (or (get-session-id) "Anonimo")
+          repetir    "F"
+          anonimo    (if (= user "Anonimo") "T" "F")
+          postvars   {:id                id
+                      :descripcion       (:descripcion params)
+                      :descripcion_corta (:descripcion_corta params)
+                      :punto_reunion     (:punto_reunion params)
+                      :fecha             (format-date-internal (:fecha params))
+                      :hora              (fix-hour (:hora params))
+                      :leader            (:leader params)
+                      :leader_email      (:leader_email params)
+                      :cuadrante         (:cuadrante params)
+                      :repetir           repetir
+                      :imagen            image-name
+                      :rodada            "F"
+                      :anonimo           anonimo}
+          result     (Save db :rodadas postvars ["id = ?" id])]
       (if (seq result)
         (generate-string {:success "Correctamente Processado!"})
         (generate-string {:error "No se pudo processar!"})))

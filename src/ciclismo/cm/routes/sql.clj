@@ -59,6 +59,7 @@
   descripcion_corta,
   punto_reunion,
   TIME_FORMAT(hora,'%h:%i %p') as hora,
+  imagen,
   leader
   FROM rodadas
   WHERE

@@ -92,8 +92,7 @@
   admin-routes)
 
 (defroutes app-routes
-  (route/resources "/")
-  (route/files "/uploads/" {:root (:uploads config)})
+  (route/files "uploads")
   (route/not-found "Not Found"))
 
 (defn -main []

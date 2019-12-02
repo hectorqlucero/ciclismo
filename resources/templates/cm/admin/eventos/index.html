@@ -68,7 +68,28 @@
 <div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'" style="padding: 5px;width:70%;">
     <form class="fm" method="POST" enctype="multipart/form-data" novalidate>
         <input type="hidden" id="id"  name="id">
-	<div class="form-group col-11">
+        <div class="form-group col-11">
+            <div style="margin-top:20px;">
+                <img id="image1" width="95" height="71" style="margin-right:10px;cursor:pointer;"/>
+                <input id="file" name="file" class="easyui-filebox" style="width:300px;"
+                       data-options=
+                       "
+                       prompt:'Escoge imagen...',
+                       buttonText:'Escoge imagen...',
+                       onChange: function(value) {
+                       var f = $(this).next().find('input[type=file]')[0];
+                       if (f.files && f.files[0]) {
+                       var reader = new FileReader();
+                       reader.onload = function(e) {
+                       $('#image1').attr('src', e.target.result);
+                       }
+                       reader.readAsDataURL(f.files[0]);
+                       }
+                       }
+                       ">
+            </div>
+        </div>
+  <div class="form-group col-11">
 		<label for="descripcion_corta">Titulo para el Calendario(<small>ex: VI Gran Fondo</small>):</label>
 
 		<input id="descripcion_corta"  name="descripcion_corta" class="form-control easyui-validatebox" data-options="required: true,validType:['length[0,100]']">
@@ -132,5 +153,32 @@
  function calendarItem() {
      window.location.href = "/eventos";
  }
+ function defaultGridNewItem() {
+     dataGrid.datagrid('unselectAll');
+     $('#image1').attr('src', '/images/placeholder_profile.png');
+     dialog.dialog('open').dialog('center').dialog('setTitle','Nuevo Record');
+     form.form('clear');
+     windowHeight = $(window).height() - ($(window).height() * 0.2);
+     dialog.dialog('resize', {height: windowHeight}).dialog('center');
+ }
+ $('#image1').click(function() {
+     var img = $('#image1');
+     if(img.width() < 500) {
+         img.animate({width: '500', height: '500'}, 1000);
+     } else {
+         img.animate({width: img.attr('width'), height: img.attr('height')}, 1000);
+     }
+ });
+ $(document).ready(function(data) {
+     $('.fm').form({
+         onLoadSuccess: function(data) {
+             var url = '/table_ref/get_imagen/' + data.id;
+             $.get(url, function(data) {
+                 var the_src = $(data).attr('src');
+                 $('#image1').attr('src', the_src)
+             });
+         }
+     });
+ });
 </script>
 {% endblock %}

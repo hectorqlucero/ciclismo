@@ -25,7 +25,7 @@
                  [ring/ring-core "1.8.0" :exclusions [commons-codec ring/ring-codec]]
                  [ring/ring-anti-forgery "1.3.0"]
                  [ring/ring-defaults "0.3.2"]]
-  :main ciclismo.core
+  :main ^:skip-aot ciclismo.core
   :aot [ciclismo.core]
   :plugins [[lein-ancient "0.6.10"]
             [lein-pprint "1.1.2"]]
@@ -34,5 +34,4 @@
   :ring {:handler       cliclismo.core/app
          :auto-reload?  true
          :auto-refresh? false}
-  :resources-paths ["shared" "resources"]
   :profiles {:uberjar {:aot :all}})
