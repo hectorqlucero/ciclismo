@@ -36,18 +36,22 @@
   ["cartas.id"
    "cartas.no_participacion"
    "categorias.descripcion"
-   "cartas.nombre"
-   "cartas.telefono"
-   "cartas.email"])
+   "corredores.nombre"
+   "corredores.apell_paterno"
+   "corredores.apell_materno"
+   "corredores.telefono"
+   "corredores.email"])
 
 (def aliases-columns
   ["cartas.id"
    "CONCAT(DATE_FORMAT(DATE(cartas.creado),'%m/%d/%Y'),' ',TIME_FORMAT(TIME(cartas.creado),'%h:%i %p')) as creado"
    "cartas.no_participacion"
    "categorias.descripcion as categoria"
-   "cartas.nombre"
-   "cartas.telefono"
-   "cartas.email"])
+   "corredores.nombre"
+   "corredores.apell_paterno"
+   "corredores.apell_materno"
+   "corredores.telefono"
+   "corredores.email"])
 
 (defn grid-json
   [{params :params}]
@@ -56,7 +60,8 @@
     (let [table    "cartas"
           scolumns (convert-search-columns search-columns)
           aliases  aliases-columns
-          join     "JOIN categorias on categorias.id = cartas.categoria"
+          join     "JOIN categorias on categorias.id = cartas.categoria
+                    JOIN corredores on corredores.id = cartas.corredores_id"
           search   (grid-search (:search params nil) scolumns)
           search   (grid-search-extra search (str "cartas.carreras_id = " @carreras_id))
           order    (grid-sort (:sort params nil) (:order params nil))
@@ -72,13 +77,9 @@
   "SELECT
    id,
    no_participacion,
+   corredores_id,
    categoria,
-   nombre,
-   sexo,
-   edad,
    equipo,
-   telefono,
-   email,
    tutor
    FROM cartas
    WHERE id = ?")
@@ -113,28 +114,30 @@
                             "<strong>Equipo:</strong> " equipo "<br>"
                             "<strong>Categoria:</strong> " (get-categorias-desc categoria))}]})
 
+(defn get-corredor-details [id]
+  (let [row (first (Query db ["SELECT * FROM corredores WHERE id = ?" id]))]
+    row))
+
 (defn exoneracion-save
   [{params :params}]
   (try
     (let [id          (:id params)
           send_email  (or (params :send_email) "F")
+          corredores_id (:corredores_id params)
+          crow        (get-corredor-details corredores_id)
           categoria   (:categoria params)
-          email       (clojure.string/lower-case (:email params))
+          email       (clojure.string/lower-case (:email crow))
           carreras_id @carreras_id
-          nombre      (capitalize-words (:nombre params))
-          telefono    (:telefono params)
+          nombre      (capitalize-words (:nombre crow))
+          telefono    (:telefono crow)
           equipo      (clojure.string/upper-case (:equipo params))
-          edad        (:edad params)
+          edad        nil
           email-body  (get-email-body carreras_id nombre email edad telefono equipo categoria)
           postvars    {:id               id
                        :no_participacion (:no_participacion params)
+                       :corredores_id    corredores_id 
                        :categoria        categoria
-                       :email            email
-                       :sexo             (:sexo params)
-                       :edad             edad
-                       :nombre           nombre
                        :equipo           equipo
-                       :telefono         telefono
                        :tutor            (capitalize-words (:tutor params))
                        :carreras_id      carreras_id}
           result      (Save db :cartas postvars ["id = ?" id])]
@@ -163,13 +166,13 @@
     :style       :normal
     :align       :center
     :width       90
-    :size        8
+    :size        9
     :border      true}
    [[:cell {:colspan 3 :align :center :style :bold} "PARTICIPANTE"]]
-   [[:cell {:style :bold :colspan 2} (str "Categoria: " (:categoria row))] [:cell {:style :bold} (str "Tipo de Bicicleta:")]]
-   [[:cell {:style :bold} (str "Nombre completo: " (:nombre row))] [:cell {:style :bold} (str "Equipo: " (:equipo row))] [:cell {:style :bold} (str "Numero: " (:no_participacion row))]]
-   [[:cell {:style :bold} (str "Telefono: " (:telefono row))] [:cell {:style :bold :colspan 2} (str "Email: " (:email row))]]
-   [[:cell {:style :bold :colspan 3} (str "Nombre del padre o tutor (En su caso): ")]]
+   [[:cell {:style :bold :colspan 2} "Categoria: " [:chunk {:style :italic} (str (:categoria row))]] [:cell {:style :bold} (str "Tipo de Bicicleta:")]]
+   [[:cell {:style :bold} "Nombre completo: " [:chunk {:style :italic} (str (:nombre row))]] [:cell {:style :bold} "Equipo: " [:chunk {:style :italic} (str (:equipo row))]] [:cell {:style :bold} "Numero: " [:chunk {:style :italic} (str (:no_participacion row))]]]
+   [[:cell {:style :bold} "Telefono: " [:chunk {:style :italic} (str (:telefono row))]] [:cell {:style :bold :colspan 2} "Email: " [:chunk {:style :italic} (str (:email row))]]]
+   [[:cell {:style :bold :colspan 3} (str "Nombre del padre o tutor (En su caso): ") [:chunk {:style :italic} (str (:tutor row))]]]
    [[:cell {:style :bold :colspan 3} (str "Firma del participante y/o tutor: ")]]])
 
 (defn execute-report [id]

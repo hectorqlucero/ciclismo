@@ -32,7 +32,9 @@
 (def search-columns
   ["cartas.id"
    "cartas.no_participacion"
-   "cartas.nombre"
+   "corredores.nombre"
+   "corredores.apell_paterno"
+   "corredores.apell_materno"
    "categorias.descripcion"
    "puntos.puntos_p"
    "puntos.puntos_1"
@@ -42,7 +44,9 @@
 (def aliases-columns
   ["cartas.id as id"
    "cartas.no_participacion"
-   "cartas.nombre"
+   "corredores.nombre"
+   "corredores.apell_paterno"
+   "corredores.apell_materno"
    "categorias.descripcion as categoria"
    "puntos.puntos_p"
    "puntos.puntos_1"
@@ -55,17 +59,18 @@
       (reset! carreras_id (:carreras_id params))
       (crear-puntos (:carreras_id params))))
   (try
-    (let [table    "cartas"
-          scolumns (convert-search-columns search-columns)
-          aliases  aliases-columns
-          join     "left join puntos on puntos.cartas_id = cartas.id
-                join categorias on categorias.id = cartas.categoria"
-          search   (grid-search (:search params nil) scolumns)
-          search   (grid-search-extra search (str "cartas.carreras_id = " @carreras_id))
-          order    (grid-sort (:sort params nil) (:order params nil))
-          order    (grid-sort-extra order "categoria ASC,nombre ASC")
-          offset   (grid-offset (parse-int (:rows params)) (parse-int (:page params)))
-          rows     (grid-rows table aliases join search order offset)]
+   (let [table    "cartas"
+         scolumns (convert-search-columns search-columns)
+         aliases  aliases-columns
+         join     "join corredores on corredores.id = cartas.corredores_id
+                   left join puntos on puntos.cartas_id = cartas.id
+                   join categorias on categorias.id = cartas.categoria"
+         search   (grid-search (:search params nil) scolumns)
+         search   (grid-search-extra search (str "cartas.carreras_id = " @carreras_id))
+         order    (grid-sort (:sort params nil) (:order params nil))
+         order    (grid-sort-extra order "categoria ASC,nombre ASC")
+         offset   (grid-offset (parse-int (:rows params)) (parse-int (:page params)))
+         rows     (grid-rows table aliases join search order offset)]
       (generate-string rows))
     (catch Exception e (.getMessage e))))
 ;;End ciclistas_puntos grid
@@ -74,13 +79,14 @@
 (def form-sql
   "SELECT
    p.id,
-   p.nombre,
+   CONCAT(COALESCE(c.nombre,''),' ',COALESCE(c.apell_paterno,''),' ',COALESCE(c.apell_materno,'')) as nombre,
    p.categoria,
    s.puntos_p,
    s.puntos_1,
    s.puntos_2,
    s.puntos_3
    FROM cartas p
+   JOIN corredores c on c.id = p.corredores_id
    JOIN puntos s on s.cartas_id = p.id
    WHERE p.id = ?")
 

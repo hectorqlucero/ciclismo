@@ -2,51 +2,54 @@
 
 (def totales-categoria-sql
   "SELECT
-     p.email,
-     p.nombre,
+     c.email,
+     CONCAT(COALESCE(c.nombre,''),' ',COALESCE(c.apell_paterno,''),' ',COALESCE(c.apell_materno,'')) as nombre,
      p.categoria as categorias_id,
      s1.descripcion as categoria,
      SUM((IFNULL(s.puntos_p,0) + IFNULL(s.puntos_1,0) + IFNULL(s.puntos_2,0) + IFNULL(s.puntos_3,0))) as puntos
      FROM cartas p
+     JOIN corredores c on c.id = p.corredores_id
      JOIN puntos s on s.cartas_id = p.id
      JOIN categorias s1 on s1.id = p.categoria
      WHERE p.categoria = ?
-     GROUP by p.email,p.categoria
-     ORDER BY puntos DESC,p.nombre
+     GROUP by c.id,p.categoria
+     ORDER BY puntos DESC,c.nombre,c.apell_paterno,c.apell_materno
      LIMIT 3")
 
 (def totales-categoria1-sql
   "SELECT
      p.carreras_id,
-     p.email,
-     p.nombre,
+     c.email,
+     CONCAT(COALESCE(c.nombre,''),' ',COALESCE(c.apell_paterno,''),' ',COALESCE(c.apell_materno,'')) as nombre,
      p.categoria as categorias_id,
      s1.descripcion as categoria,
      SUM((IFNULL(s.puntos_p,0) + IFNULL(s.puntos_1,0) + IFNULL(s.puntos_2,0) + IFNULL(s.puntos_3,0))) as puntos
      FROM cartas p
+     JOIN corredores c on c.id = p.corredores_id
      JOIN puntos s on s.cartas_id = p.id
      JOIN categorias s1 on s1.id = p.categoria
      WHERE p.categoria = ?
-     GROUP by p.carreras_id,p.email,p.categoria
+     GROUP by p.carreras_id,c.id,p.categoria
      ORDER BY p.carreras_id,puntos DESC")
 
 (def cartas-sql
   "SELECT
-   id,
-   categoria,
-   no_participacion,
-   nombre,
-   sexo,
-   edad,
-   equipo,
-   telefono,
-   email,
-   tutor,
-   carreras_id
+   cartas.id,
+   cartas.categoria,
+   cartas.no_participacion,
+   CONCAT(COALESCE(corredores.nombre,''),' ',COALESCE(corredores.apell_paterno,''),' ',COALESCE(corredores.apell_materno,'')) as nombre,
+   corredores.sexo,
+   cartas.edad,
+   cartas.equipo,
+   corredores.telefono,
+   corredores.email,
+   cartas.tutor,
+   cartas.carreras_id
    FROM cartas
-   WHERE email = ?
-   AND categoria = ?
-   AND carreras_id = ?")
+   JOIN corredores on corredores.id = cartas.corredores_id
+   WHERE corredores.email = ?
+   AND cartas.categoria = ?
+   AND cartas.carreras_id = ?")
 
 (def eventos-sql
   "
@@ -95,16 +98,17 @@
 (def totales-sql
   "SELECT
      p.carreras_id,
-     p.email,
-     p.nombre,
+     c.email,
+     CONCAT(COALESCE(c.nombre,''),' ',COALESCE(c.apell_paterno,''),' ',COALESCE(c.apell_materno,'')) as nombre,
      s1.id as categorias_id,
      s1.descripcion as categoria,
      SUM((IFNULL(s.puntos_p,0) + IFNULL(s.puntos_1,0) + IFNULL(s.puntos_2,0) + IFNULL(s.puntos_3,0))) as puntos
      FROM cartas p
+     JOIN corredores c on c.id = p.corredores_id
      JOIN puntos s on s.cartas_id = p.id
      JOIN categorias s1 on s1.id = p.categoria
-     GROUP by p.email,p.categoria
-     ORDER BY s1.descripcion,puntos DESC,p.nombre")
+     GROUP by c.id,p.categoria
+     ORDER BY s1.descripcion,puntos DESC,c.nombre,c.apell_paterno,c.apell_materno")
 
 (def totales-carrera-sql
   "select
@@ -117,26 +121,28 @@
 
 (def ptotales-sql
   "SELECT
-   p.email,
-   p.nombre,
+   c.email,
+   CONCAT(COALESCE(c.nombre,''),' ',COALESCE(c.apell_paterno,''),' ',COALESCE(c.apell_materno,'')) as nombre,
    s1.descripcion as categoria,
    SUM((IFNULL(s.puntos_p,0) + IFNULL(s.puntos_1,0) + IFNULL(s.puntos_2,0) + IFNULL(s.puntos_3,0))) as puntos
    FROM cartas p
+   JOIN corredores c on c.id = p.corredores_id
    JOIN puntos s on s.cartas_id = p.id
    JOIN categorias s1 on s1.id = p.categoria
-   GROUP BY p.email,p.categoria
-   ORDER BY s1.descripcion,puntos DESC,p.nombre")
+   GROUP BY c.id,p.categoria
+   ORDER BY s1.descripcion,puntos DESC,c.nombre,c.apell_paterno,c.apell_materno")
 
 (def pdf-sql
   "SELECT
   s.descripcion as categoria,
   p.no_participacion,
-  p.nombre,
+  CONCAT(COALESCE(c.nombre,''),' ',COALESCE(c.apell_paterno,''),' ',COALESCE(c.apell_materno,'')) as nombre,
   p.equipo,
-  p.telefono,
-  p.email,
+  c.telefono,
+  c.email,
   p.tutor
   FROM cartas p
+  JOIN corredores c on c.id = p.corredores_id
   JOIN categorias s on s.id = p.categoria
   WHERE p.id = ?")
 
@@ -192,11 +198,12 @@ personales."))
   (str "SELECT
    categorias.descripcion,
    cartas.no_participacion,
-   cartas.nombre,
+   CONCAT(COALESCE(corredores.nombre,''),' ',COALESCE(corredores.apell_paterno,''),' ',COALESCE(corredores.apell_materno,'')) as nombre,
    cartas.equipo
    FROM cartas
+   JOIN corredores on corredores.id = cartas.corredores_id
    LEFT JOIN categorias on categorias.id = cartas.categoria
    WHERE
    categoria IN(" categories ")
    AND carreras_id = " carreras_id "
-   ORDER BY categorias.descripcion,nombre"))
+   ORDER BY categorias.descripcion,corredores.nombre,corredores.apell_paterno,corredored.apell_materno"))

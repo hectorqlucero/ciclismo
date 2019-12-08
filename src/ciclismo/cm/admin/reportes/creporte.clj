@@ -18,14 +18,15 @@
   (str "SELECT
    categorias.descripcion,
    cartas.no_participacion,
-   cartas.nombre,
+   CONCAT(COALESCE(corredores.nombre,''),' ',COALESCE(corredores.apell_paterno,''),' ',COALESCE(corredores.apell_materno,'')) as nombre,
    cartas.equipo
    FROM cartas
+   JOIN corredores on corredores.id = cartas.corredores_id
    LEFT JOIN categorias on categorias.id = cartas.categoria
    WHERE
-   categoria IN(" categories ")
-   AND carreras_id = " carreras_id "
-   ORDER BY categorias.descripcion,nombre"))
+   cartas.categoria IN(" categories ")
+   AND cartas.carreras_id = " carreras_id "
+   ORDER BY categorias.descripcion,corredores.nombre,corredores.apell_paterno,corredores.apell_materno"))
 
 (defn execute-creporte [carrera_id categorias]
   (let [h1         (:descripcion (first (Query db ["SELECT descripcion FROM carreras WHERE id = ?" carrera_id])))

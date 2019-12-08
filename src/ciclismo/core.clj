@@ -58,6 +58,7 @@
                           <a class='dropdown-item' href='/admin/users'>Usuarios</a>
                           <a class='dropdown-item' href='/cartas/categorias'>Categorias</a>
                           <a class='dropdown-item' href='/admin/carreras'>Carreras</a>
+                          <a class='dropdown-item' href='/admin/corredores'>Corredores</a>
                           <a class='dropdown-item' href='/cartas/exoneracion'>Registro Corredores</a>
                           <a class='dropdown-item' href='/cartas/creporte'>Reporte Carrera</a>
                           <a class='dropdown-item' href='/cartas/puntos'>Actualizar Puntos</a>

@@ -18,7 +18,11 @@
                  {:title (str (:descripcion crow))
                   :fecha (format-date-external (str (:fecha crow)))
                   :user  (or (get-session-id) "Anonimo")
-                  :rows  (Query db totales-sql)})))
+                  :rows  (Query db totales-sql)
+                  :banco (str (:banco carreras-row))
+                  :banco_cuenta (str (:banco_cuenta carreras-row))
+                  :banco_instrucciones (str (:banco_instrucciones carreras-row))
+                  :organizador (str (:organizador carreras-row))})))
 
 (defn processar [{params :params}]
   (if-not (nil? (:carreras_id params)) (reset! carreras_id (:carreras_id params)))
@@ -71,26 +75,24 @@
 (defn registro-save [{params :params}]
   (try
     (let [id          (:id params)
+          corredor_id (:corredor_id params)
+          crow        (first (Query db ["SELECT * FROM corredores WHERE id = ?" corredor_id]))
           send_email  (or (params :send_email) "F")
           categoria   (:categoria params)
-          email       (clojure.string/lower-case (:email params))
+          email       (clojure.string/lower-case (:email crow))
           carreras_id @carreras_id
-          nombre      (capitalize-words (:nombre params))
-          telefono    (:telefono params)
+          nombre      (capitalize-words (str (:nombre crow) " " (:apell_paterno crow) " " (:apell_materno crow)))
+          telefono    (:telefono crow)
           equipo      (clojure.string/upper-case (:equipo params))
-          edad        (:edad params)
+          edad        nil
           email-body  (get-email-body carreras_id nombre email edad telefono equipo categoria)
           postvars    {:id               id
-                       :no_participacion (:no_participacion params)
                        :categoria        categoria
-                       :email            email
-                       :sexo             (:sexo params)
-                       :edad             edad
-                       :nombre           nombre
+                       :no_participacion (:no_participacion params)
                        :equipo           equipo
-                       :telefono         telefono
                        :tutor            (capitalize-words (:tutor params))
-                       :carreras_id      carreras_id}
+                       :carreras_id      carreras_id
+                       :corredores_id    corredor_id}
           result      (Save db :cartas postvars ["id = ?" id])]
       (if (seq result)
         (do

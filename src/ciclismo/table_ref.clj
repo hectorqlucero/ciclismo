@@ -94,25 +94,29 @@
 ;; End carreras_categorias
 
 (def nombres-sql
-  "SELECT nombre as value,nombre as text FROM cartas ORDER BY nombre")
+  "SELECT id as value,CONCAT(id,' - ',COALESCE(nombre,''),' ',COALESCE(apell_paterno,''),' ',COALESCE(apell_materno,''),' Email:',COALESCE(email,'')) as text FROM corredores ORDER BY corredores.nombre,corredores.apell_paterno,corredores.apell_materno")
 
 (def correos-sql
   "SELECT email as value,email as text FROM cartas ORDER BY email")
 
+(def equipos-sql
+  "SELECT equipo as value, equipo as text FROM cartas ORDER BY equipo")
+
 ;; Start carreras-categorias
 (def carreras-categorias-sql
   "SELECT
-  p.nombre,
+  CONCAT(COALESCE(c.nombre,''),' ',COALESCE(c.apell_paterno,''),' ',COALESCE(c.apell_materno,'')) as nombre,
   p.categoria as categorias_id,
   s1.descripcion as categoria,
   SUM((IFNULL(s.puntos_p,0) + IFNULL(s.puntos_1,0) + IFNULL(s.puntos_2,0) + IFNULL(s.puntos_3,0))) as puntos
   FROM cartas p
+  JOIN corredores c on c.id = p.corredores_id
   JOIN puntos s on s.cartas_id = p.id
   JOIN categorias s1 on s1.id = p.categoria
   WHERE
   p.carreras_id = ?
   AND p.categoria = ?
-  GROUP BY p.carreras_id,p.email,p.categoria
+  GROUP BY p.carreras_id,c.id,p.categoria
   ORDER BY p.carreras_id,puntos DESC")
 
 (defn carreras-categorias [carreras_id categorias_id]
@@ -206,6 +210,7 @@
   (GET "/table_ref/carreras_all" [] (generate-string (Query db get_carreras_all-sql)))
   (GET "/table_ref/nombres" [] (generate-string (Query db nombres-sql)))
   (GET "/table_ref/correos" [] (generate-string (Query db correos-sql)))
+  (GET "/table_ref/equipos" [] (generate-string (Query db equipos-sql)))
   (GET "/table_ref/max_count/:carreras_id" [carreras_id] (generate-string (get-max-count carreras_id)))
   (GET "/table_ref/max_time/:carreras_id" [carreras_id] (generate-string (get-max-time carreras_id)))
   (GET "/table_ref/get-contrareloj/:carreras_id" [carreras_id] (get-contrareloj carreras_id))

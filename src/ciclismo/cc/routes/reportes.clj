@@ -14,13 +14,13 @@
 
 (def categorias-rows-sql
   "select distinct
-cartas.carreras_id,
-cartas.categoria,
-categorias.descripcion
-from cartas
-join categorias on categorias.id = cartas.categoria
-group by cartas.carreras_id,cartas.categoria
-order by cartas.carreras_id,cartas.categoria")
+   cartas.carreras_id,
+   cartas.categoria,
+   categorias.descripcion
+   from cartas
+   join categorias on categorias.id = cartas.categoria
+   group by cartas.carreras_id,cartas.categoria
+   order by cartas.carreras_id,cartas.categoria")
 
 (defn get-limited-row [categorias_id]
   (let [rows (Query db [totales-categoria-sql categorias_id])]

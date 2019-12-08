@@ -179,6 +179,24 @@
                         PRIMARY KEY (`id`)
                         ) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8")
 
+(def corredores-sql
+  "
+  CREATE TABLE corredores (
+   id int(11) NOT NULL AUTO_INCREMENT,
+   nombre varchar(100) DEFAULT NULL,
+   apell_paterno varchar(100) DEFAULT NULL,
+   apell_materno varchar(100) DEFAULT NULL,
+   pais varchar(100) DEFAULT NULL,
+   ciudad varchar(100) DEFAULT NULL,
+   telefono varchar(100) DEFAULT NULL,
+   celular varchar(100) DEFAULT NULL,
+   email varchar(100) DEFAULT NULL,
+   sexo varchar(100) DEFAULT NULL COMMENT='V=Varonil,F=Femenino',
+   fecha_nacimiento DATE DEFAULT NULL,
+   PRIMARY KEY (id)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+   ")
+
 (def cuadrantes-rows
   [{:name         "Rositas"
     :leader       "Rossy Rutiaga"
