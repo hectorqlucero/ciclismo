@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% style "/easyui/themes/default/easyui.css" %}
+{% style "/easyui/themes/icon.css" %}
+{% style "/easyui/themes/color.css" %}
+{% endblock %}
+
+{% block navbar_content %}
+{% include "cc/registro_menu.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <form method="post" action="/padron" novalidate style="background-color:#EFEFEF;">
+        {% csrf-field %}
+        <!-- row -->
+        <div class="row">
+            <div class="col">
+                <p><strong>Nota: </strong>Este formato deberá ser llenado a computadora con fotografia en digital y ocupará solo el espacio correspondiente, es importante entregarlo al Presidente de la Asociacion de su Estado, vía correo electrónico.</p>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col" style="display:flex;justify-content:center;align-items:center;">
+                <span><strong>FORMATO DE AFILIACIÓN 2020</strong></span>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col">
+                <div style="margin-bottom:20px;">
+                    <img id="image1" width="95" height="71"/>
+                    <input id="file" class="easyui-filebox" name="file" style="width:300px" data-options="
+                    prompt:'Escoje ...',
+                    buttonText:'Escoje foto...',
+                    onChange: function(value){
+                    var f = $(this).next().find('input[type=file]')[0];
+                    if (f.files && f.files[0]){
+                    var reader = new FileReader();
+                    reader.onload = function(e){
+                    $('#image1').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(f.files[0]);
+                    }
+                    }">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <div style="margin-bottom:5px;">
+                        <input id="nacional" name="nacional" class="form-control easyui-checkbox" label="Nacional(1):" value="N">
+                    </div>
+                    <div style="margin-bottom:5px;">
+                        <input id="uci" name="uci" class="form-control easyui-checkbox" label="UCI:" value="U">
+                    </div>
+                    <div style="margin-bottom:5px;">
+                        <input id="uciid" name="uciid" class="form-control easyui-checkbox" label="UCIID:" value="I">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>Categoria(2):</label>
+                    <select id="categoria" name="categoria" class="form-control easyui-combobox">
+                        <option value="1">ELITE</option>
+                        <option value="2">SUB 23</option>
+                        <option value="3">JUV "A"</option>
+                        <option value="4">JUV "B"</option>
+                        <option value="5">JUV "C"</option>
+                        <option value="6">INFANTIL</option>
+                        <option value="7">MASTER</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col" style="margin-left:5px;">
+                <label>Numero de licencia(3):</label>
+                <input id="licencia" name="licencia" class="form-control eayui-textbox" data-options:"required:true,width:'100%'">
+            </div>
+            <div class="col">
+                <label>Tipo de Registro(4):</label>
+                <select id="registro_tipo" name="registro_tipo" class="form-control easyui-combobox">
+                    <option value="1">Directivo</option>
+                    <option value="2">Deportista</option>
+                    <option value="3">Entrenador</option>
+                    <option value="4">Juez</option>
+                    <option value="5">Delegado</option>
+                    <option value="6">Otro</option>
+                </select>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col" style="display:flex;justify-content:center;align-items:center;">
+                <span><strong>FEDERACIÓN MEXICANA DE CICLISMO A.C.</strong></span>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-6">
+                <label>Asociación:</label>
+                <input id="asociacion" name="asociacion" class="form-control easyui-textbox" data-options="required:true">
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-6">
+                <label>Nacionalidad:</label>
+                <input id="nacionalidad" name="nacionalidad" class="form-control easyui-textbox" data-options="required:true">
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-6">
+                <label>Nombre del equipo:</label>
+                <input id="equipo" name="equipo" class="form-control easyui-textbox" data-options="required:true">
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>Tipo de equipo</label>
+                    <div style="margin-bottom:5px;">
+                        <input id="t_nacional" name="t_nacional" class="form-control easyui-checkbox" label="Nacional:" value="N">
+                    </div>
+                    <div style="margin-bottom:5px;">
+                        <input id="t_continental" name="t_continental" class="form-control easyui-checkbox" label="Continental:" value="C">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col" style="display:flex;justify-content:center;align-items:center;">
+                <span><strong>NOMBRE Y CURP</strong></span>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-3" style="margin-left:5px;">
+                <label>Apellido Paterno:</label>
+                <input id="apell_paterno" name="apell_paterno" class="form-control easyui-textbox" data-options="required:true">
+            </div>
+            <div class="col-3" style="margin-left:5px;">
+                <label>Apellido Materno:</label>
+                <input id="apell_materno" name="apell_materno" class="form-control easyui-textbox" data-options="required:true">
+            </div>
+            <div class="col-3" style="margin-left:5px;">
+                <label>Nombre:</label>
+                <input id="nombre" name="nombre" class="form-control easyui-textbox" data-options="required:true">
+            </div>
+            <div class="col-2" style="margin-left:5px;">
+                <label>CURP:</label>
+                <input id="curp" name="curp" class="form-control easyui-textbox" data-options="required:true">
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col" style="display:flex;justify-content:center;align-items:center;">
+                <span><strong>DOMICILIO</strong></span>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-4">
+                <label>Calle y Numero:</label>
+                <input id="calle_numero" name="calle_numero" class="form-control easyui-textbox">
+            </div>
+            <div class="col-4" style="margin-left:5px;">
+                <label>Colonia:</label>
+                <input id="colonia" name="colonia" class="form-control easyui-textbox">
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-3">
+                <label>Municipio:</label>
+                <input id="municipio" name="municipio" class="form-control easyui-textbox">
+            </div>
+            <div class="col-3" style="margin-left:5px;">
+                <label>Estado:</label>
+                <input id="estado" name="estado" class="form-control easyui-textbox">
+            </div>
+            <div class="col-3" style="margin-left:5px;">
+                <label>Codigo Postal:</label>
+                <input id="codigo_postal" name="codigo_postal" class="form-control easyui-textbox">
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-3">
+                <label>Fecha de Nacimiento:</label>
+                <input id="fecha_nacimiento" name="fecha_nacimiento" class="form-control easyui-datebox">
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-3">
+                <label>Numero Telefonico:</label>
+                <input id="telefono" name="telefono" class="form-control easyui-maskedbox" mask="(999) 999-9999">
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-3">
+                <label>Sexo:</label>
+                <select id="sexo" name="sexo" class="form-control easyui-combobox">
+                    <option value="M">Varonil</option>
+                    <option value="F">Femenil</option>
+                </select>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-3">
+                <label>Email:</label>
+                <input id="email" name="email" class="form-control easyui-validatebox" validType="email">
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row" style="display:flex;justify-content:center;align-items:center;">
+                    <div class="form-group col-3">
+                <input id="crear_padron" type="submit" class="btn btn-primary btn-large" value="Postear">
+            </div>
+        </div>
+        <!-- row -->
+
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% script "/easyui/jquery.easyui.min.js" %}
+{% script "/easyui/datagrid-detailview.js" %}
+{% script "/easyui/plugins/jquery.datagrid.js" %}
+{% script "/js/jquery.maskedinput.min.js" %}
+{% script "/easyui/locale/easyui-lang-es.js" %}
+{% endblock %}
