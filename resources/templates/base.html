@@ -28,18 +28,16 @@
     <!-- Navigation bar -->
     {% block navbar_content %}
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-        <a href="http://lucero-systems.cf" class="navbar-brand" style="margin-bottom: 0; ">Ciclismo Mexicali</a>
+        <a href="http://ciclismobc.org" class="navbar-brand" style="margin-bottom: 0; ">Ciclismo BC</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 	    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 	<span class="navbar-toggler-icon"></span>
 	</button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto" id="cum">
-              <li class="nav-item"><a href="/eventos" class="nav-link"><img src="/images/cal.png" class="img-thumbnail" alt="calendar" width="24" height="24"> Eventos</a></li>
-              <li class="nav-item"><a href="/main" class="nav-link"><img src="/images/cal.png" class="img-thumbnail" alt="calendar" width="24" height="24"> Rodadas</a></li>
+                <li class="nav-item"><a href="/eventos" class="nav-link"><img src="/images/cal.png" class="img-thumbnail" alt="calendar" width="24" height="24"> Eventos</a></li>
                 <li class="nav-item"><a href="/talleres/reporte" class="nav-link"><img src="/images/bike-shop.png" class="img-thumbnail" alt="Talleres" width="24" height="24"> Talleres</a></li>
                 <li class="nav-item"><a href="/cuadrantes/reporte" class="nav-link"><img src="/images/group.png" class="img-thumbnail" alt="Talleres" width="24" height="24"> Grupos</a></li>
-                <li class="nav-item"><a href="/entrenamiento/rodadas" class="nav-link"><img src="/images/edit.png" class="img-thumbnail" alt="Rodadas" width="24" height="24"> Rodadas</a></li>
                 {% user_status %}
             </ul>
         </div>

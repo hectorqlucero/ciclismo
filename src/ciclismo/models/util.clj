@@ -620,21 +620,22 @@
   "This is to create carreras_categorias example"
   (doseq [item (Query db "SELECT * FROM categorias")]
     (doseq [sitem (Query db "SELECT * FROM carreras")]
-      (let [carreras_id   (str (:id sitem))
-            categorias_id (str (:id item))
-            status        "T"
-            crow          (first (Query db ["SELECT * FROM carreras_categorias WHERE carreras_id = ? AND categorias_id = ?" carreras_id categorias_id]))
-            id            (:id crow)
-            postvars      (if (seq crow)
-                            {:id (str id)
-                             :carreras_id (str (:carreras_id crow))
-                             :categorias_id (str (:categorias_id crow))
-                             :status (str (:status crow))}
-                            {:id            (str id)
-                             :carreras_id   carreras_id
-                             :categorias_id categorias_id
-                             :status        status})]
-        (Save db :carreras_categorias postvars ["id = ?" id])))))
+      (if (seq sitem)
+        (let [carreras_id   (str (:id sitem))
+              categorias_id (str (:id item))
+              status        "T"
+              crow          (first (Query db ["SELECT * FROM carreras_categorias WHERE carreras_id = ? AND categorias_id = ?" carreras_id categorias_id]))
+              id            (:id crow)
+              postvars      (if (seq crow)
+                              {:id (str id)
+                               :carreras_id (str (:carreras_id crow))
+                               :categorias_id (str (:categorias_id crow))
+                               :status (str (:status crow))}
+                              {:id            (str id)
+                               :carreras_id   carreras_id
+                               :categorias_id categorias_id
+                               :status        status})]
+          (Save db :carreras_categorias postvars ["id = ?" id]))))))
 
 (defn refran []
   (let [number (rand-int 31)
