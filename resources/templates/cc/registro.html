@@ -8,10 +8,8 @@
 <!--
 body {
   background-image: url(/images/registro.jpg);
+  background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: contain;
-  background-position: bottom;
 }
 //-->
 </style>
@@ -52,16 +50,17 @@ body {
           <label for="corredor_id">Corredor:<br><small>Puedes buscar por nombre o email. Ex. juan o click en la flechita para seleccionar corredor.</small></label>
             <input name="corredor_id" class="form-control easyui-combobox" id="corredor_id" data-options="required: true,url:'/table_ref/nombres',method:'GET'">
         </div>
-        <div class="form-group col-11">
+        <div class="form-group col-10">
           <label for="equipo">Equipo:</label>
           <input id="equipo" name="equipo" class="form-control easyui-textbox" data-options="required: true">
         </div>
-        <div class="form-group col-11">
+        <div class="form-group col-10">
           <label for="tutor">Nombre del padre o tutor (En su caso):</label>
           <input id="tutor" name="tutor" class="form-control easyui-textbox" data-options="required: false">
         </div>
         <div class="form-group col-10">
-          <input id="registrarse" type="submit" class="btn btn-primary" value="Registrate">
+            <a href="javascript:void(0)" class="btn btn-primary easyui-linkbutton c6" id="submit">Registrarse</a>
+          <!-- <input id="registrarse" type="submit" class="btn btn-primary" value="Registrate"> -->
         </div>
     </form>
 </div>
@@ -73,4 +72,26 @@ body {
 {% script "/easyui/plugins/jquery.datagrid.js" %}
 {% script "/js/jquery.maskedinput.min.js" %}
 {% script "/easyui/locale/easyui-lang-es.js" %}
+<script>
+    $("a#submit").click(function() {
+        $("form.fm").form("submit", {
+            onSubmit: function() {
+                return $(this).form("enableValidation").form("validate");
+            },
+            success: function(data) {
+                try {
+                    var dta = JSON.parse(data);
+                    if(dta.hasOwnProperty('url')) {
+                        $.messager.alert('Informacion', 'Correctamente processado, gracias por registrarse.  Recibira un correo electronico!');
+                        setTimeout(function(){location.href=dta.url}, 5000);
+                    } else if(dta.hasOwnProperty('error')) {
+                        $.messager.alert('Error', dta.error, 'error');
+                    }
+                } catch(e) {
+                    console.error("Invalid JSON");
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}

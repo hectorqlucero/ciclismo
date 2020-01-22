@@ -80,7 +80,7 @@
           send_email  (or (params :send_email) "F")
           categoria   (:categoria params)
           email       (clojure.string/lower-case (:email crow))
-          carreras_id @carreras_id
+          carreras_id (params :carreras_id)
           nombre      (capitalize-words (str (:nombre crow) " " (:apell_paterno crow) " " (:apell_materno crow)))
           telefono    (:telefono crow)
           equipo      (clojure.string/upper-case (:equipo params))
@@ -97,7 +97,7 @@
       (if (seq result)
         (do
           (if (= send_email "T") (send-email host email-body))
-          (generate-string {:success "Correctamente Processado!<br>Revise los datos con cuidado antes de cerrar esta pagina. En el encabezado aparece la informacion para realizar su pago. Muchas Gracias!"}))
+          (generate-string {:url "/"}))
         (generate-string {:error "No se pudo processar!"})))
     (catch Exception e (.getMessage e))))
 ;; End registro-save
