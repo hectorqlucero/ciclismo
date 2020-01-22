@@ -10,6 +10,9 @@
 (defn get-alumno [matricula]
   (:matricula (first (Query db ["SELECT matricula FROM alumnos WHERE matricula = ?" matricula]))))
 
+(defn get-padron [padron]
+  (:id (first (Query db ["SELECT id FROM padron WHERE id = ?" padron]))))
+
 (def get_cuadrantes-sql
   "SELECT id AS value, name AS text FROM cuadrantes order by name")
 
@@ -195,6 +198,7 @@
   (GET "/table_ref/carreras/categorias/:carreras_id/:categorias_id" [carreras_id categorias_id] (carreras-categorias carreras_id categorias_id))
   (GET "/table_ref/get_users" [] (generate-string (Query db [get_users-sql])))
   (GET "/table_ref/alumnos/:matricula" [matricula] (generate-string (get-alumno matricula)))
+  (GET "/table_ref/padron/:padron" [padron] (generate-string (get-padron padron)))
   (GET "/table_ref/get_cuadrantes" [] (generate-string (Query db [get_cuadrantes-sql])))
   (GET "/table_ref/months" [] (generate-string (months)))
   (GET "/table_ref/years/:pyears/:nyears" [pyears nyears] (generate-string (years pyears nyears)))

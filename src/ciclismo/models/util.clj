@@ -98,6 +98,11 @@
     (session/get :matricula)
     (catch Exception e nil)))
 
+(defn get-padron-id []
+  (try
+    (session/get :padron)
+    (catch Exception e nil)))
+
 (defn current_date []
   "Get current date formatted MM/dd/YYYY"
   (f/unparse external-date-parser (t/now)))

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block navbar_content %}
+{% include "cc/padron_menu.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      {% if padron %}
+       <strong>Padron: </strong> {{ padron }}
+       {% else %}
+       {{ title }}
+       {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

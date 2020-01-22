@@ -13,6 +13,7 @@
             [ciclismo.cm.admin.reportes.reconocimiento :as reconocimiento]
             [ciclismo.cm.admin.reportes.treporte :as treporte]
             [ciclismo.cm.admin.fotos.podio :as fotos]
+            [ciclismo.cc.routes.padron :refer [padron padron!]]
             [compojure.core :refer [defroutes GET POST]]))
 
 (defroutes admin-routes
@@ -98,4 +99,8 @@
   (GET "/podio" req [] (fotos/main req))
   (POST "/podio" req [] (fotos/upload-picture req))
   ;; ENd fotos
+  ;; Start padron
+  (GET "/padron/:padron" [padron] (padron padron))
+  (POST "/padron" request [] (padron! request))
+  ;; End padron
   )
