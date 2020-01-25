@@ -12,7 +12,7 @@
             [ciclismo.cm.admin.reportes.ptotal :as ptotal]
             [ciclismo.cm.admin.reportes.reconocimiento :as reconocimiento]
             [ciclismo.cm.admin.reportes.treporte :as treporte]
-            [ciclismo.cm.admin.fotos.podio :as fotos]
+            [ciclismo.cm.admin.fotos.podio :as podio]
             [ciclismo.cc.routes.padron :refer [padron padron!]]
             [compojure.core :refer [defroutes GET POST]]))
 
@@ -96,8 +96,8 @@
     (reconocimiento/reconocimiento-pdf nombre categoria))
   ;; End reconocimiento
   ;; Start fotos
-  (GET "/podio" req [] (fotos/main req))
-  (POST "/podio" req [] (fotos/upload-picture req))
+  (GET "/podio" req [] (podio/main req))
+  (POST "/podio" req [] (podio/upload-picture req))
   ;; ENd fotos
   ;; Start padron
   (GET "/padron/:padron" [padron] (padron padron))

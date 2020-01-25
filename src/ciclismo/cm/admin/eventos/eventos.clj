@@ -93,7 +93,7 @@
     (let [id         (fix-id (:id params))
           file       (:file params)
           image-name (if-not (zero? (:size file))
-                       (upload-image file id (str (config :uploads) "/eventos/")))
+                       (upload-image file id (str (config :uploads) "eventos/")))
           user       (or (get-session-id) "Anonimo")
           repetir    "F"
           anonimo    (if (= user "Anonimo") "T" "F")

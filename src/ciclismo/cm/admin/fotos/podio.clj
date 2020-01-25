@@ -15,8 +15,8 @@
   (let [tempfile  (file :tempfile)
         real-name (file :filename)
         size      (:size file)
-        type      (:content-type file)
-        extension (peek (clojure.string/split type #"\/"))
+        file-type (:content-type file)
+        extension (peek (clojure.string/split file-type #"\/"))
         extension (if (= extension "jpeg") "jpg" "jpg")
         filename  (str rfile "." extension)
         result    (if-not (zero? size)
@@ -28,5 +28,6 @@
     (let [rfile (str "r" n)
           kfile (keyword rfile)
           file  (kfile params)]
-      (upload-file file rfile)))
+      (if file
+        (future (upload-file file rfile)))))
   (redirect "/registro/fotos"))

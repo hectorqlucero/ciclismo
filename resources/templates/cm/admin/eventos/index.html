@@ -173,6 +173,7 @@
      $('.fm').form({
          onLoadSuccess: function(data) {
              var url = '/table_ref/get_imagen/' + data.id;
+             console.log("url: " + url);
              $.get(url, function(data) {
                  var the_src = $(data).attr('src');
                  $('#image1').attr('src', the_src)
