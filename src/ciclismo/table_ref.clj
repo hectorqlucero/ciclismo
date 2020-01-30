@@ -103,7 +103,10 @@
   "SELECT email as value,email as text FROM cartas ORDER BY email")
 
 (def equipos-sql
-  "SELECT equipo as value, equipo as text FROM cartas ORDER BY equipo")
+  "SELECT nombre as value,nombre as text FROM equipos ORDER BY nombre")
+
+; (def equipos-sql
+;   "SELECT equipo as value, equipo as text FROM cartas ORDER BY equipo")
 
 ;; Start carreras-categorias
 (def carreras-categorias-sql

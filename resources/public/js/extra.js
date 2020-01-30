@@ -12,8 +12,8 @@ const confirmDelete = "Esta seguro que quiere remover este record? Esta accion n
 const maxImageHeight = 128;
 const maxImageWidth = 128;
 
-$.parser.onComplete = function () {
-}
+// $.parser.onComplete = function () {
+// }
 
 function menu() {
     var menuIndex = parseInt(sessionStorage.getItem("calls-menu-index")) || 0;

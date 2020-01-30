@@ -21,5 +21,13 @@
   (POST "/padron/login" request [] (padron/buscar! request))
   (GET "/padron/registrar" request [] (padron/registrar request))
   (POST "/padron/registrar" request [] (padron/registrar! request))
+  (GET "/padron/logoff" request [] (padron/logoff request))
+  (GET "/padron/edit/:padron" [padron] (padron/padron-edit padron))
+  (GET "/padron/load/:padron" [padron] (padron/padron-load padron))
+  (GET "/padron/rpaswd" request [] (padron/reset-password request))
+  (POST "/padron/rpaswd" request [] (padron/reset-password! request))
+  (GET "/padron/reset_password/:token" [token] (padron/reset-jwt token))
+  (POST "/padron/reset_password" request [] (padron/reset-jwt! request))
+  (POST "/padron" request [] (padron/padron-save request))
   ;;End padron
   )

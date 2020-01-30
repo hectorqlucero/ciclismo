@@ -52,7 +52,7 @@ body {
         </div>
         <div class="form-group col-10">
           <label for="equipo">Equipo:</label>
-          <input id="equipo" name="equipo" class="form-control easyui-textbox" data-options="required: true">
+          <input id="equipo" name="equipo" class="form-control easyui-combobox" data-options="required:true,url:'/table_ref/equipos',method:'GET'">
         </div>
         <div class="form-group col-10">
           <label for="tutor">Nombre del padre o tutor (En su caso):</label>
