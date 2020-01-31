@@ -19,88 +19,60 @@
 {% endblock %}
 
 {% block content %}
-<div id="myCarousel" class="carousel slide bg-inverse w-100 ml-auto mr-auto" data-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    <li data-target="#myCarousel" data-slide-to="1"></li>
-    <li data-target="#myCarousel" data-slide-to="2"></li>
-    <li data-target="#myCarousel" data-slide-to="3"></li>
-    <li data-target="#myCarousel" data-slide-to="4"></li>
-    <li data-target="#myCarousel" data-slide-to="5"></li>
-    <li data-target="#myCarousel" data-slide-to="6"></li>
-    <li data-target="#myCarousel" data-slide-to="7"></li>
-    <li data-target="#myCarousel" data-slide-to="8"></li>
-    <li data-target="#myCarousel" data-slide-to="9"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img class="d-block img-fluid my-img" src="/uploads/sf/r1.jpg" alt="slide #1">
-      <div class="carousel-caption d-none d-md-block">
-        <h3>{{title1}}</h3>
-      </div>
-    </div>
-    <div class="carousel-item">
-        <img class="d-block img-fluid my-img" src="/uploads/sf/r2.jpg" alt="slide #2">
-        <div class="carousel-caption d-none d-md-block">
-            <h3>{{title2}}</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-1">
+            <li><strong>Eventos: </strong></li>
+        </div>
+        <div class="col-11">
+            <span>Listado de todos los eventos y carreras.  Ex. Paseo Rosarito Ensenada.</span>
+        </div>
+        <div class="col-1">
+            <li><strong>Talleres:</strong></li>
+        </div>
+        <div class="col-11">
+            <span><strong>Enlista los </strong>Talleres de reparación/venta de bicicletas de la localidad.</span>
+        </div>
+        <div class="col-1">
+            <li><strong>Grupos:</strong></li>
+        </div>
+        <div class="col-11">
+            <span><strong>Enlista los</strong> Grupos ciclistas tales como MBC cycling, Team Power, Cuadrante Rosita, LaPedacera, Sector Ciclista Azul etc...</span>
+        </div>
+        <div class="col-1">
+            <li><strong>Registro:</strong></li>
+        </div>
+        <div class="col-11">
+            <span>Aquí podrás registrarte para alguna competencia de ciclismo , solo tendrás que seleccionar los siguientes datos :</span>
+        </div>
+        <div class="col-1">
+            &nbsp;
+        </div>
+        <div class="col-11">
+            <ul type="square">
+                <li>Seleccionar la carrera disponible en la que quieras participar .</li>
+                <li>Seleccionar la categoría en la que el corredor  participara.</li>
+                <li>Seleccionar El Corredor que aparece en el comboBox y si no aparece el nombre del corredor solo tendrás que presionar el botón de nuevo para registrar tus datos(Nombre, apellido paterno y materno , país, ciudad, Teléfono, correo electrónico, Equipo, fecha de nacimiento y dirección).</li>
+                <li>Seleccionar El Equipo</li>
+                <li>y escribir el Nombre del padre o tutor (En su caso): </li>
+                <li>Y por ultimo presionar el Boton de Registrar y listo ya estarás registrado y  recibirás vía correo electrónico tu confirmación  de tu registro en la carrera.</li>
+            </ul>
+        </div>
+        <div class="col-1">
+            <li><strong>Entrar:</strong></li>
+        </div>
+        <div class="col-11">
+            <span>Aquí podrás registrarte como miembro y así crear Eventos y se podrá visualizar en la lista de eventos organizado por mes.</span> 
+        </div>
+        <div class="col-12">
+            <hr>
+        </div>
+        <div class="col-12">
+            <span>Si tienes alguna sugerencia o necesitas  o ayuda, estamos para ayudarte.</span>
+        </div>
+        <div class="col-12">
+            <span><a href="mailto:marcopescador@hotmail.com" class="easyui-linkbutton" data-options="IconCls:'icon-email'">Mandame Un Correo</a></span>
         </div>
     </div>
-    <div class="carousel-item">
-      <img class="d-block img-fluid my-img" src="/uploads/sf/r3.jpg" alt="slide #3">
-      <div class="carousel-caption d-none d-md-block">
-          <h3>{{title3}}</h3>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img class="d-block img-fluid my-img" src="/uploads/sf/r4.jpg" alt="slide #4">
-      <div class="carousel-caption d-none d-md-block">
-          <h3>{{title4}}</h3>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img class="d-block img-fluid my-img" src="/uploads/sf/r5.jpg" alt="slide #5">
-      <div class="carousel-caption d-none d-md-block">
-          <h3>{{title5}}</h3>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img class="d-block img-fluid my-img" src="/uploads/sf/r6.jpg" alt="slide #6">
-      <div class="carousel-caption d-none d-md-block">
-          <h3>{{title6}}</h3>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img class="d-block img-fluid my-img" src="/uploads/sf/r7.jpg" alt="slide #7">
-      <div class="carousel-caption d-none d-md-block">
-          <h3>{{title7}}</h3>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img class="d-block img-fluid my-img" src="/uploads/sf/r8.jpg" alt="slide #8">
-      <div class="carousel-caption d-none d-md-block">
-          <h3>{{title8}}</h3>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img class="d-block img-fluid my-img" src="/uploads/sf/r9.jpg" alt="slide #9">
-      <div class="carousel-caption d-none d-md-block">
-          <h3>{{title9}}</h3>
-      </div>
-    </div>
-    <div class="carousel-item">
-        <img class="d-block img-fluid my-img" src="/uploads/sf/r10.jpg" alt="slide #10">
-        <div class="carousel-caption d-none d-md-block">
-            <h3>{{title10}}</h3>
-        </div>
-    </div>
-  </div>
-  <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
 </div>
 {% endblock %}
