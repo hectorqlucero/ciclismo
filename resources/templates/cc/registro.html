@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
 
 {% block head %}
 {% style "/easyui/themes/default/easyui.css" %}
@@ -7,9 +7,9 @@
 <style>
 <!--
 body {
-  background-image: url(/images/registro.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
+    background-image: url(/images/registro.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 //-->
 </style>
@@ -20,51 +20,154 @@ body {
 {% endblock %}
 
 {% block content %}
-<div class="container col-8">
-    <div class="card-header">
-        <h4 class="mb-0"><span style="color:rgb(18,123,163);">Registrate Aquí</span></h4>
-    </div>
-    <form class="fm" method="post" action="/registro/save" novalidate style="width:100%;background-color:#EFEFEF;">
+<div class="container">
+    <form id="fm-registro" class="fm" method="post" action="/registro/save" novalidate style="width:100%;background-color:#EFEFEF;">
         {% csrf-field %}
-        <!-- <div class="form-group col-11" style="background-color:#f0f0f0;"> -->
-        <!--   <p><small>Realizar el Pago en cualquier banco <b>{{banco}}</b> o directamente en cualquier tienda <b>OXXO</b></small><br/> -->
-        <!--   <small>Número de cuenta <b>{{banco}}: {{banco_cuenta}}</b></small><br/> -->
-        <!--   <small>{{banco_instrucciones}}</small> -->
-        <!--   </p> -->
-        <!-- </div> -->
         <input id="send_email" name="send_email" type="hidden" value="T">
-        <div class="form-group col-10">
-          <label for="carreras_id">Seleccionar Carrera:</label>
-            <input id="carreras_id" name="carreras_id" class="form-control easyui-combobox" data-options="url:'/table_ref/carreras',
-            method:'GET',
-            onSelect:function(record){
-            var url = '/table_ref/get_categorias/'+record.value;
-            $('#categoria').combobox('reload',url);
-            }">
+
+        <!-- start header -->
+        <div class="row">
+            <div class="col-12" style="text-align:center;">
+                <h4><span style="backgroud-color:#EFEFEF;align:center;">Registrate Aqui</span></h4>
+            </div>
         </div>
-        <div class="form-group col-10">
-            <label for="categoria">Categoria:</label>
-            <input id="categoria" name="categoria" class="form-control easyui-combobox" data-options="method:'GET'">
+        <!-- end header -->
+
+        <!-- start carrera -->
+        <div class="row ml-10" style="margin-left:10px !important;">
+            <div class="col-12">
+                <label>Carrera:</label>
+            </div>
+            <div class="col-12">
+                <input id="carreras_id" name="carreras_id" class="form-control easyui-combobox" data-options="url:'/table_ref/carreras',
+                width:'90%',
+                method:'GET',
+                onSelect:function(record){
+                var url = '/table_ref/get_categorias/'+record.value;
+                $('#categoria').combobox('reload',url);
+                }">
+            </div>
         </div>
-        <div class="form-group col-10">
-          <label for="corredor_id">Corredor:<br><small>Puedes buscar por nombre o email. Ex. juan o click en la flechita para seleccionar corredor.</small></label>
-            <input name="corredor_id" class="form-control easyui-combobox" id="corredor_id" data-options="required: true,url:'/table_ref/nombres',method:'GET'">
+        <!-- end carrera -->
+
+        <!-- start categoria -->
+        <div class="row" style="margin-left:10px !important;">
+            <div class="col-12">
+                <label>Categoria:</label>
+            </div>
+            <div class="col-12">
+                <input id="categoria" name="categoria" class="form-control easyui-combobox" data-options="width:'90%',method:'GET'">
+            </div>
         </div>
-        <div class="form-group col-10">
-          <label for="equipo">Equipo:</label>
-          <!-- <input id="equipo" name="equipo" class="form-control easyui-textbox" data-options="required: true"> -->
-          <input id="equipo" name="equipo" class="form-control easyui-combobox" data-options="required:true,url:'/table_ref/equipos',method:'GET'">
+        <!-- end categOria -->
+
+        <!-- start corredor -->
+        <div class="row" style="margin-left:10px !important;">
+            <div class="col-12">
+                <label>Corredor:</label>
+            </div>
+            <div class="col-12">
+                <input name="corredor_id" class="form-control easyui-combobox" id="corredor_id" data-options="required: true,url:'/table_ref/nombres',method:'GET',width:'90%'">
+                <a id="nuevo_corredor" href="javascript:void(0)" class="easyui-linkbutton">Nuevo</a>
+            </div>
         </div>
-        <div class="form-group col-10">
-          <label for="tutor">Nombre del padre o tutor (En su caso):</label>
-          <input id="tutor" name="tutor" class="form-control easyui-textbox" data-options="required: false">
+        <!-- end corredor -->
+
+        <!-- start equipo -->
+        <div class="row" style="margin-left:10px !important;">
+            <div class="col-12">
+                <label for="equipo">Equipo:</label>
+            </div>
+            <div class="col-12">
+                <input id="equipo" name="equipo" class="form-control easyui-combobox" data-options="required:true,width:'90%',url:'/table_ref/equipos',method:'GET'">
+            </div>
         </div>
-        <div class="form-group col-10">
-            <a href="javascript:void(0)" class="btn btn-primary easyui-linkbutton c6" id="submit">Registrarse</a>
-          <!-- <input id="registrarse" type="submit" class="btn btn-primary" value="Registrate"> -->
+        <!-- end equipo -->
+
+        <!-- start tutor -->
+        <div class="row" style="margin-left:10px !important;">
+            <div class="col-12">
+                <label for="tutor">Nombre del padre o tutor (En su caso):</label>
+            </div>
+            <div class="col-12">
+                <input id="tutor" name="tutor" class="form-control easyui-textbox" data-options="required: false,width:'90%'">
+            </div>
         </div>
+        <!-- end tutor -->
+
+        <!-- start boton -->
+        <br>
+        <div class="row" style="margin-left:10px !important;">
+            <div class="col-12">
+                <input id="registrarse" type="submit" class="btn btn-primary" value="Registrate">
+            </div>
+        </div>
+        <br>
+        <!-- end boton -->
     </form>
 </div>
+
+<!-- start dialog -->
+<div class="easyui-dialog dlg" data-options="closed: true, buttons: '#dlg-buttons'" style="padding: 5px;width:70%;">
+  <form id="fm-dlg" class="fm" method="POST" action="/corredores/save" enctype="multipart/form-data" novalidate>
+    <input type="hidden" id="id"  name="id">
+    <div class="form-group col-11">
+      <label for="nombre">Nombre del corredor:</label>
+      <input id="nombre" name="nombre" class="form-control easyui-textbox" data-options="required: true">
+    </div>
+    <div class="form-group col-11">
+      <label for="apell_paterno">Apellido Paterno:</label>
+      <input id="apell_paterno" name="apell_paterno" class="form-control easyui-textbox" data-options="required: true">
+    </div>
+    <div class="form-group col-11">
+      <label for="apell_materno">Apellido Materno:</label>
+      <input id="apell_materno" name="apell_materno" class="form-control easyui-textbox" data-options="required: false">
+    </div>
+    <div class="form-group col-11">
+      <label for="pais">Pais:</label>
+      <input id="pais" name="pais" class="form-control easyui-textbox" data-options="required: false">
+    </div>
+    <div class="form-group col-11">
+      <label for="ciudad">Ciudad:</label>
+      <input id="ciudad" name="ciudad" class="form-control easyui-textbox" data-options="required: false">
+    </div>
+    <div class="form-group col-11">
+      <label for="telefono">Telefono:</label>
+      <input id="telefono" name="telefono" class="form-control easyui-textbox type-phone" data-options="required: false">
+    </div>
+    <div class="form-group col-11">
+      <label for="email">Email:</label>
+      <input id="email" name="email" class="easyui-validatebox form-control" data-options="required:true,validType:'email'">
+    </div>
+    <div class="form-group col-11">
+      <label for="sexo">Sexo:</label>
+      <select id="sexo" class=" form-control easyui-combobox" name="sexo">
+        <option value=""></option>
+        <option value="M">Masculino</option>
+        <option value="F">Femenino</option>
+      </select>
+    </div>
+    <div class="form-group col-11">
+      <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+      <input id="fecha_nacimiento" name="fecha_nacimiento" class="form-control easyui-datebox" data-options="required: false">
+    </div>
+    <div class="form-group col-11">
+      <label for="direccion">Direccion:</label>
+      <input id="direccion" name="direccion" class="form-control easyui-textbox" data-options="required: false">
+    </div>
+  </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-ok'"
+       onclick="saveItem()">Postear</a>
+    <a href="javascript:void(0)"
+       class="easyui-linkbutton"
+       data-options="iconCls: 'icon-cancel'"
+       onclick="dialogClose()">Cancelar</a>
+</div>
+<!-- end dialog -->
 {% endblock %}
 
 {% block scripts %}
@@ -74,25 +177,79 @@ body {
 {% script "/js/jquery.maskedinput.min.js" %}
 {% script "/easyui/locale/easyui-lang-es.js" %}
 <script>
-    $("a#submit").click(function() {
-        $("form.fm").form("submit", {
-            onSubmit: function() {
-                return $(this).form("enableValidation").form("validate");
-            },
-            success: function(data) {
-                try {
-                    var dta = JSON.parse(data);
-                    if(dta.hasOwnProperty('url')) {
-                        $.messager.alert('Informacion', 'Correctamente processado, gracias por registrarse.  Recibira un correo electronico!');
-                        setTimeout(function(){location.href=dta.url}, 5000);
-                    } else if(dta.hasOwnProperty('error')) {
-                        $.messager.alert('Error', dta.error, 'error');
-                    }
-                } catch(e) {
-                    console.error("Invalid JSON");
-                }
-            }
-        });
-    });
+var token = $('#__anti-forgery-token').val();
+
+$("a#nuevo_corredor").click(function() {
+    $(".dlg").dialog('open').dialog('center').dialog('setTitle', 'Nuevo Corredor');
+    $("#fm-dlg").form('clear');
+});
+
+function dialogClose() {
+    $(".dlg").dialog('close');
+}
+
+$("#fm-dlg").form({
+    url: '/corredores/save',
+    queryParams: {
+        '__anti-forgery-token': token
+    },
+    onSubmit: function () {
+        return $(this).form('validate');
+    },
+    success: function (result) {
+        var json = JSON.parse(result);
+        // Display errors (if any)
+        if (json.error && json.success) {
+            // Display error on incomplete submission
+            $.messager.show({
+                title: 'Error',
+                msg: json.success + "<br>" + json.error
+            });
+            $(".dlg").dialog('close');
+            window.location = "/registro";
+        } else if (json.error) {
+            // Display error on failed submission
+            $.messager.show({
+                title: 'Error',
+                msg: json.error
+            });
+        } else if(json.success) {
+            // Display success message on complete submission
+            $.messager.show({
+                title: 'Success',
+                msg: json.success
+            });
+            $(".dlg").dialog('close');
+            window.location = "/registro";
+        }
+    }
+});
+
+$("#fm-registro").form({
+    url: '/registro/save',
+    onSubmit: function () {
+        return $(this).form('validate');
+    },
+    success: function (result) {
+        var json = JSON.parse(result);
+        if(json.url) {
+            $.messager.show({
+                title:'Success',
+                msg: "Processado sin errores!"
+            });
+        } else {
+            console.log('Error: ' + "No de pudo processar!")
+        }
+        window.location = "/";
+    }
+});
+
+function saveItem() {
+    $("#fm-dlg").submit();
+}
+
+$("a#registrarse").click(function() {
+    $("#fm-registro").submit();
+});
 </script>
 {% endblock %}

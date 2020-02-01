@@ -3,6 +3,7 @@
             [ciclismo.cc.routes.fotos :as fotos]
             [ciclismo.cc.routes.reportes :as reportes]
             [ciclismo.cc.routes.padron :as padron]
+            [ciclismo.cm.admin.corredores.corredores :refer [corredores-save]]
             [compojure.core :refer [defroutes GET POST]]))
 
 (defroutes cc-routes
@@ -30,4 +31,7 @@
   (POST "/padron/reset_password" request [] (padron/reset-jwt! request))
   (POST "/padron" request [] (padron/padron-save request))
   ;;End padron
+  ;;Start corredores
+  (POST "/corredores/save" request [] (corredores-save request))
+  ;;End corredores
   )

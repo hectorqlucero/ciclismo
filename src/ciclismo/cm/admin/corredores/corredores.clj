@@ -72,8 +72,7 @@
     (generate-string (first row))))
 ;;end cuadrante form
 
-(defn corredores-save
-  [{params :params}]
+(defn corredores-save [{params :params}]
   (let [id       (fix-id (:id params))
         postvars {:id          id
                   :nombre           (capitalize-words (:nombre params))
