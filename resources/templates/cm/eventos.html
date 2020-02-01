@@ -11,66 +11,24 @@
 </style>
 {% endblock %}
 {% block content %}
-<h1 style="text-align:center;margin:0;margin-bottom:0;font-size:2em;font-weight:bold;color:#fa981b;text-transform:uppercase;">{{ title }}</h1>
-<div class="row justify-content-center">
-	<div class="col-auto">
-		<img class="evento_image" width="279" height="279" src="/images/Calendario_enero.jpg" class="img-fluid" onclick="showEvents({{ year }}, 1)">
-	</div>
-</div>
-<div class="row justify-content-center">
-	<div class="col-auto">
-		<img class="evento_image" width="279" height="279" src="/images/Calendario_febrero.jpg" class="img-fluid" onclick="showEvents({{ year }}, 2)">
-	</div>
-</div>
-<div class="row justify-content-center">
-	<div class="col-auto">
-		<img class="evento_image" width="279" height="279" src="/images/Calendario_marzo.jpg" class="img-fluid" onclick="showEvents({{ year }}, 3)">
-	</div>
-</div>
-<div class="row justify-content-center">
-	<div class="col-auto">
-		<img class="evento_image" width="279" height="279" src="/images/Calendario_abril.jpg" class="img-fluid" onclick="showEvents({{ year }}, 4)">
-	</div>
-</div>
-<div class="row justify-content-center">
-	<div class="col-auto">
-		<img class="evento_image" width="279" height="279" src="/images/Calendario_mayo.jpg" class="img-fluid" onclick="showEvents({{ year }}, 5)">
-	</div>
-</div>
-<div class="row justify-content-center">
-	<div class="col-auto">
-		<img class="evento_image" width="279" height="279" src="/images/Calendario_junio.jpg" class="img-fluid" onclick="showEvents({{ year }}, 6)">
-	</div>
-</div>
-<div class="row justify-content-center">
-	<div class="col-auto">
-		<img class="evento_image" width="279" height="279" src="/images/Calendario_julio.jpg" class="img-fluid" onclick="showEvents({{ year }}, 7)">
-	</div>
-</div>
-<div class="row justify-content-center">
-	<div class="col-auto">
-		<img class="evento_image" width="279" height="279" src="/images/Calendario_agosto.jpg" class="img-fluid" onclick="showEvents({{ year }}, 8)">
-	</div>
-</div>
-<div class="row justify-content-center">
-	<div class="col-auto">
-		<img class="evento_image" width="279" height="279" src="/images/Calendario_septiembre.jpg" class="img-fluid" onclick="showEvents({{ year }}, 9)">
-	</div>
-</div>
-<div class="row justify-content-center">
-	<div class="col-auto">
-		<img class="evento_image" width="279" height="279" src="/images/Calendario_octubre.jpg" class="img-fluid" onclick="showEvents({{ year }}, 10)">
-	</div>
-</div>
-<div class="row justify-content-center">
-	<div class="col-auto">
-		<img class="evento_image" width="279" height="279" src="/images/Calendario_noviembre.jpg" class="img-fluid" onclick="showEvents({{ year }}, 11)">
-	</div>
-</div>
-<div class="row justify-content-center">
-		<div class="col-auto">
-		<img class="evento_image" width="279" height="279" src="/images/Calendario_diciembre.jpg" class="img-fluid" onclick="showEvents({{ year }}, 12)">
-	</div>
+<div class="container">
+    <h1 style="text-align:center;margin:0;margin-bottom:0;font-size:2em;font-weight:bold;color:#fa981b;text-transform:uppercase;">{{ title }}</h1>
+    <div class="row">
+        <div class="col">
+            <img class="evento_image" width="150" height="150" src="/images/calendario_enero.jpg" class="img-fluid" onclick="showEvents({{ year }}, 1)">
+            <img class="evento_image" width="150" height="150" src="/images/calendario_febrero.jpg" class="img-fluid" onclick="showEvents({{ year }}, 2)">
+            <img class="evento_image" width="150" height="150" src="/images/calendario_marzo.jpg" class="img-fluid" onclick="showEvents({{ year }}, 3)">
+            <img class="evento_image" width="150" height="150" src="/images/calendario_abril.jpg" class="img-fluid" onclick="showEvents({{ year }}, 4)">
+            <img class="evento_image" width="150" height="150" src="/images/calendario_mayo.jpg" class="img-fluid" onclick="showEvents({{ year }}, 5)">
+            <img class="evento_image" width="150" height="150" src="/images/calendario_junio.jpg" class="img-fluid" onclick="showEvents({{ year }}, 6)">
+            <img class="evento_image" width="150" height="150" src="/images/calendario_julio.jpg" class="img-fluid" onclick="showEvents({{ year }}, 7)">
+            <img class="evento_image" width="150" height="150" src="/images/calendario_agosto.jpg" class="img-fluid" onclick="showEvents({{ year }}, 8)">
+            <img class="evento_image" width="150" height="150" src="/images/calendario_septiembre.jpg" class="img-fluid" onclick="showEvents({{ year }}, 9)">
+            <img class="evento_image" width="150" height="150" src="/images/calendario_octubre.jpg" class="img-fluid" onclick="showEvents({{ year }}, 10)">
+            <img class="evento_image" width="150" height="150" src="/images/calendario_noviembre.jpg" class="img-fluid" onclick="showEvents({{ year }}, 11)">
+            <img class="evento_image" width="150" height="150" src="/images/calendario_diciembre.jpg" class="img-fluid" onclick="showEvents({{ year }}, 12)">
+        </div>
+    </div>
 </div>
 	{% block scripts %}
 	<script>
