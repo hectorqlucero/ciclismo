@@ -93,22 +93,21 @@
 
 ;; Start padron
 (def padron-sql
-  "
-  SELECT
-  id,
-  nombre,
-  apell_paterno,
-  apell_materno,
-  pais,
-  ciudad,
-  telefono,
-  email,
-  sexo,
-  DATE_FORMAT(fecha_nacimiento,'%m/%d/%Y') as fecha_nacimiento,
-  direccion
-  FROM corredores
-  WHERE id = ?
-  ")
+  "SELECT
+   id,
+   nombre,
+   apell_paterno,
+   apell_materno,
+   pais,
+   ciudad,
+   telefono,
+   email,
+   sexo,
+   DATE_FORMAT(fecha_nacimiento,'%m/%d/%Y') as fecha_nacimiento,
+   direccion
+   FROM corredores
+   WHERE id = ?
+   ")
 
 (defn padron-load [padron]
   (let [row (first (Query db [padron-sql padron]))]
